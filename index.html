@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>PayTonLoyer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/views.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+<div id="app">
+<div class="toast" id="toast"></div>
+
+<!-- =====================================================
+  SPLASH
+===================================================== -->
+<div class="screen" id="sp">
+  <div class="sp-mesh">
+    <div class="sp-b1"></div><div class="sp-b2"></div><div class="sp-b3"></div>
+    <div class="sp-grid"></div>
+  </div>
+  <div class="sp-top au">
+    <div class="sp-logo"><svg viewBox="0 0 46 46"><path d="M23 4L4 19v23h14v-12h10v12h14V19L23 4z"/><path d="M17 29h12M15 21h16"/></svg></div>
+    <div class="sp-nm">PayTonLoyer</div>
+    <div class="sp-tag" id="sp-tag">La solution pour gérer vos loyers en Afrique de l'Ouest</div>
+  </div>
+  <div class="sp-body">
+    <div class="sp-feats au1">
+      <div class="sp-feat"><div class="sp-fi" style="background:rgba(200,80,58,.2)">💳</div><div class="sp-ft"><strong>Paiements mobiles</strong> — Orange Money, Wave, MTN</div></div>
+      <div class="sp-feat"><div class="sp-fi" style="background:rgba(26,92,174,.2)">📄</div><div class="sp-ft"><strong>Contrats numériques</strong> — Signez en quelques secondes</div></div>
+      <div class="sp-feat"><div class="sp-fi" style="background:rgba(58,120,40,.2)">📊</div><div class="sp-ft"><strong>Suivi en temps réel</strong> — Revenus et paiements clairs</div></div>
+    </div>
+    <div class="sp-dots au2" id="sp-dots"><div class="sp-dot on"></div><div class="sp-dot"></div><div class="sp-dot"></div></div>
+    <div class="sp-btns au3">
+      <button class="btn bp" onclick="S('auth')">Se connecter</button>
+      <button class="sp-bsec" onclick="S('auth');swTab('reg')">Créer un compte gratuit</button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+  AUTH
+===================================================== -->
+<div class="screen hidden" id="auth">
+  <div class="sb dk" style="position:absolute;top:0;left:0;right:0;z-index:10"><span class="t" style="color:white">9:41</span><span class="i" style="color:rgba(255,255,255,.6)">▲▲▲ 🔋</span></div>
+  <div class="scroll">
+    <div class="auth-hero">
+      <div class="ah-hero-b1"></div><div class="ah-hero-b2"></div>
+      <div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1">
+        <div class="auth-logo"><svg viewBox="0 0 22 22"><path d="M11 2L2 9v11h6v-6h6v6h6V9L11 2z"/></svg></div>
+        <div><div style="font-family:var(--serif);font-size:20px;font-weight:600;color:white">PayTonLoyer</div><div style="font-size:12px;color:rgba(255,255,255,.42);margin-top:1px">Gérez vos loyers facilement</div></div>
+      </div>
+    </div>
+    <div style="padding:20px 22px 0">
+      <div class="at">
+        <button class="at-tab on" id="tab-l" onclick="swTab('log')">Connexion</button>
+        <button class="at-tab" id="tab-r" onclick="swTab('reg')">Inscription</button>
+      </div>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="f-log" style="padding:0 22px 32px">
+      <div style="font-size:25px;font-weight:800;color:var(--ink);letter-spacing:-.6px;margin-bottom:5px">Bon retour 👋</div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.5">Sélectionnez votre profil et connectez-vous</div>
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.07em;margin-bottom:10px">VOUS ÊTES</div>
+      <div class="roles" id="lr">
+        <div class="role-c on" data-role="landlord" onclick="selLR(this,'landlord')"><span class="ri">🏠</span><span class="rn">Propriétaire</span></div>
+        <div class="role-c" data-role="agent" onclick="selLR(this,'agent')"><span class="ri">💼</span><span class="rn">Agent immo.</span></div>
+        <div class="role-c" data-role="tenant" onclick="selLR(this,'tenant')"><span class="ri">🔑</span><span class="rn">Locataire</span></div>
+      </div>
+      <div class="fg"><div class="fl">Adresse email</div><input class="fi" type="email" id="le" placeholder="votre@email.com" oninput="cErr('le-err')" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="fg">
+        <div class="fl">Mot de passe</div>
+        <div style="position:relative"><input class="fi" type="password" id="lp" placeholder="••••••••" style="padding-right:44px" oninput="cErr('le-err')" onkeydown="if(event.key==='Enter')doLogin()"><span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:17px" onclick="tp('lp')">👁</span></div>
+      </div>
+      <div class="err-box" id="le-err"></div>
+      <div style="text-align:right;margin-bottom:20px"><span style="font-size:13px;font-weight:600;color:var(--terra);cursor:pointer" onclick="showForgot()">Mot de passe oublié ?</span></div>
+      <button class="btn bp" id="lbtn" onclick="doLogin()">Se connecter</button>
+      <div class="dor">ou continuer avec</div>
+      <div style="display:flex;gap:10px">
+        <button class="sb2" onclick="toast('🌐 Google — bientôt disponible')"><span style="font-size:18px">🌐</span>Google</button>
+        <button class="sb2" onclick="toast('📘 Facebook — bientôt disponible')"><span style="font-size:18px">📘</span>Facebook</button>
+      </div>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="f-reg" style="display:none;padding:0 22px 32px">
+      <div style="font-size:25px;font-weight:800;color:var(--ink);letter-spacing:-.6px;margin-bottom:5px">Créer un compte</div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.5">Rejoignez des milliers d'utilisateurs en Afrique</div>
+      <div class="fg"><div class="fl">Nom complet</div><input class="fi" type="text" id="rn" placeholder="Ex : Amadou Mbaye" oninput="cErr('re-err')"></div>
+      <div class="fg"><div class="fl">Téléphone</div><input class="fi" type="tel" id="rt" placeholder="+221 77 000 00 00"></div>
+      <div class="fg"><div class="fl">Adresse email</div><input class="fi" type="email" id="re" placeholder="votre@email.com" oninput="cErr('re-err')"></div>
+      <div class="fg">
+        <div class="fl">Mot de passe</div>
+        <div style="position:relative"><input class="fi" type="password" id="rp" placeholder="Minimum 8 caractères" style="padding-right:44px" oninput="chkPwd()"><span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:17px" onclick="tp('rp')">👁</span></div>
+        <div id="ps" style="margin-top:7px;display:none">
+          <div style="display:flex;gap:3px;margin-bottom:4px"><div id="p1" style="flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .3s"></div><div id="p2" style="flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .3s"></div><div id="p3" style="flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .3s"></div><div id="p4" style="flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .3s"></div></div>
+          <div id="pl" style="font-size:11px;font-weight:600;color:var(--muted)"></div>
+        </div>
+      </div>
+      <div class="err-box" id="re-err"></div>
+      <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.07em;margin-bottom:10px">VOUS ÊTES</div>
+      <div class="roles" id="rr">
+        <div class="role-c on" data-role="landlord" onclick="this.parentElement.querySelectorAll('.role-c').forEach(c=>c.classList.remove('on'));this.classList.add('on')"><span class="ri">🏠</span><span class="rn">Propriétaire</span></div>
+        <div class="role-c" data-role="agent" onclick="this.parentElement.querySelectorAll('.role-c').forEach(c=>c.classList.remove('on'));this.classList.add('on')"><span class="ri">💼</span><span class="rn">Agent immo.</span></div>
+        <div class="role-c" data-role="tenant" onclick="this.parentElement.querySelectorAll('.role-c').forEach(c=>c.classList.remove('on'));this.classList.add('on')"><span class="ri">🔑</span><span class="rn">Locataire</span></div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);text-align:center;line-height:1.5;margin-bottom:14px">En créant un compte vous acceptez nos <span style="color:var(--terra);font-weight:600">Conditions</span> et notre <span style="color:var(--terra);font-weight:600">Politique de confidentialité</span></div>
+      <button class="btn bp" onclick="doReg()">Créer mon compte</button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+  DASHBOARD PROPRIÉTAIRE
+===================================================== -->
+<div class="screen hidden" id="dl">
+  <div class="sb dk" style="background:linear-gradient(160deg,#0C0A07,#1E160E)"><span class="t" style="color:white">9:41</span><span class="i" style="color:rgba(255,255,255,.6)">▲▲▲ 🔋</span></div>
+  <div class="dh">
+    <div class="dh-b1"></div><div class="dh-b2"></div>
+    <div class="dh-row">
+      <div><div class="dh-gr">Bonjour,</div><div class="dh-nm" id="dl-nm">Amadou Mbaye 👋</div></div>
+      <div class="dh-acts">
+        <button class="hbtn" onclick="S('notifs')"><svg viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3l-2 2v1h16v-1l-2-2V8a6 6 0 00-6-6z"/><path d="M8 17a2 2 0 004 0"/></svg><div class="nred"></div></button>
+        <div class="av av36 avt" id="dl-av" style="cursor:pointer" onclick="navL(4,'profile')">AM</div>
+      </div>
+    </div>
+    <div class="sts">
+      <div class="st au1"><div class="st-v">4</div><div class="st-l">Propriétés</div></div>
+      <div class="st ac au2"><div class="st-v" id="dl-pending">3</div><div class="st-l">En attente</div></div>
+      <div class="st au1"><div class="st-v">850k</div><div class="st-l">FCFA/mois</div></div>
+    </div>
+  </div>
+  <div class="scroll" style="padding:14px 18px 0">
+    <div class="upg au" onclick="toast('🌟 Fonctionnalité Pro — bientôt disponible !')"><div class="upg-ic">⚡</div><div class="upg-b"><div class="upg-t">Passer à PayTonLoyer Pro</div><div class="upg-s">Rapports avancés · Export PDF · Multi-compte</div></div><div class="upg-arr"><svg viewBox="0 0 15 15"><path d="M5 4l4 3.5L5 11"/></svg></div></div>
+    <div class="sh2"><div class="sh2-t">Actions rapides</div></div>
+    <div class="qas">
+      <button class="qa" onclick="navL(0,'properties')"><div class="qa-i qt"><svg viewBox="0 0 18 18"><path d="M9 2L2 7v9h4v-5h6v5h4V7L9 2z"/></svg></div><div class="qa-l">Propriétés</div></button>
+      <button class="qa" onclick="navL(0,'tenants')"><div class="qa-i qo"><svg viewBox="0 0 18 18"><circle cx="9" cy="5" r="4"/><path d="M2 17c0-4 3-7 7-7s7 3 7 7"/></svg></div><div class="qa-l">Locataires</div></button>
+      <button class="qa" onclick="navL(2,'contracts')"><div class="qa-i qs"><svg viewBox="0 0 18 18"><path d="M12 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-3-5z"/><path d="M12 2v5h4M6 11h6M6 8h4M6 14h3"/></svg></div><div class="qa-l">Contrats</div></button>
+      <button class="qa" onclick="navL(0,'analytics')"><div class="qa-i qg"><svg viewBox="0 0 18 18"><path d="M3 13l4-5 3 3 4-6"/><path d="M3 17h12"/></svg></div><div class="qa-l">Analyses</div></button>
+    </div>
+    <div class="sh2"><div class="sh2-t">Activité récente</div><div class="sh2-l" onclick="navL(1,'payments-l')">Voir tout</div></div>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:18px">
+      <div class="ait"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Fatou Diallo</div><div class="ait-d">Appt. 3B · Dakar Plateau · Aujourd'hui</div></div><div class="ait-r"><div class="ait-a pos">+150 000</div><div class="bdg bok" style="margin-top:3px">Payé</div></div></div>
+      <div class="ait"><div class="ait-ic ic-w"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l2 2"/></svg></div><div class="ait-b"><div class="ait-n">Moussa Ndiaye</div><div class="ait-d">Villa 2 · Almadies · Éch. J-6</div></div><div class="ait-r"><div class="ait-a neu">200 000</div><div class="bdg bw" style="margin-top:3px">Attente</div></div></div>
+      <div class="ait" style="border:none"><div class="ait-ic ic-d"><svg viewBox="0 0 20 20"><path d="M10 2l8 16H2z"/><path d="M10 9v4M10 15v1"/></svg></div><div class="ait-b"><div class="ait-n">Aïssatou Sow</div><div class="ait-d">Appt. 1A · Mermoz · 5j retard</div></div><div class="ait-r"><div class="ait-a neg">175 000</div><div class="bdg bd" style="margin-top:3px">Retard</div></div></div>
+    </div>
+    <div class="sh2"><div class="sh2-t">Revenus mensuels</div><div class="sh2-l" onclick="navL(0,'analytics')">Détails</div></div>
+    <div class="card" style="margin-bottom:22px"><div class="cw" id="rc"></div><div style="display:flex;justify-content:space-between;margin-top:4px" id="rc-l"></div></div>
+  </div>
+  <div class="tabbar" id="tl">
+    <button class="tbt on" onclick="navL(0,'dl')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M11 3L2 10v10h5v-5h8v5h5V10L11 3z"/></svg></div><span class="tbt-l">Accueil</span></button>
+    <button class="tbt" onclick="navL(1,'payments-l')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><rect x="2" y="5" width="18" height="14" rx="2"/><path d="M2 10h18M6 14h4"/></svg></div><span class="tbt-l">Paiements</span></button>
+    <button class="tbt" onclick="navL(2,'contracts')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V8l-4-6z"/><path d="M14 2v6h6"/></svg></div><span class="tbt-l">Contrats</span></button>
+    <button class="tbt" onclick="navL(3,'messages')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M20 2H2v14l4-4h14V2z"/></svg></div><span class="tbt-l">Messages</span></button>
+    <button class="tbt" onclick="navL(4,'profile')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><circle cx="11" cy="7" r="4"/><path d="M3 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div><span class="tbt-l">Profil</span></button>
+  </div>
+</div>
+
+<!-- =====================================================
+  DASHBOARD LOCATAIRE
+===================================================== -->
+<div class="screen hidden" id="dt">
+  <div class="sb dk" style="background:linear-gradient(160deg,#0C0A07,#1E160E)"><span class="t" style="color:white">9:41</span><span class="i" style="color:rgba(255,255,255,.6)">▲▲▲ 🔋</span></div>
+  <div class="dh">
+    <div class="dh-b1"></div><div class="dh-b2"></div>
+    <div class="dh-row">
+      <div><div class="dh-gr">Bonjour,</div><div class="dh-nm" id="dt-nm">Fatou Diallo 👋</div></div>
+      <div class="dh-acts">
+        <button class="hbtn" onclick="S('notifs')"><svg viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3l-2 2v1h16v-1l-2-2V8a6 6 0 00-6-6z"/><path d="M8 17a2 2 0 004 0"/></svg></button>
+        <div class="av av36 avo" id="dt-av" style="cursor:pointer" onclick="navT(4,'profile')">FD</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="due"><div class="due-d1"></div><div class="due-d2"></div>
+      <div style="position:relative;z-index:1">
+        <div class="due-lbl">Loyer de mai 2026</div>
+        <div class="due-amt">150 000 <span class="due-cur">F CFA</span></div>
+        <div class="due-dt"><svg style="width:13px;height:13px;flex-shrink:0" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="9" height="9" rx="1.5"/><path d="M4.5 1v2M8.5 1v2M2 5.5h9"/></svg>Échéance : 1ᵉʳ mai 2026</div>
+        <div class="due-prop">📍 Appartement 3B, Dakar Plateau</div>
+        <div class="due-cta" onclick="navT(1,'payflow')"><svg style="width:14px;height:14px;fill:none;stroke:white;stroke-width:2.2" viewBox="0 0 15 15"><rect x="1" y="3" width="13" height="10" rx="2"/><path d="M1 7h13M4 11h4"/></svg>Payer maintenant</div>
+      </div>
+    </div>
+    <div style="padding:0 18px">
+      <button class="btn bp" style="margin-bottom:18px;box-shadow:0 6px 20px rgba(200,80,58,.36)" onclick="navT(1,'payflow')">
+        <svg style="width:17px;height:17px;fill:none;stroke:white;stroke-width:2.2" viewBox="0 0 17 17"><rect x="2" y="4" width="13" height="10" rx="2"/><path d="M2 7h13M5 11h4"/></svg>
+        Payer mon loyer maintenant
+      </button>
+      <div class="sh2"><div class="sh2-t">Mon logement</div></div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;gap:12px;align-items:center">
+          <div style="width:50px;height:50px;border-radius:14px;background:var(--terra-l);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg style="width:24px;height:24px;fill:none;stroke:var(--terra-d);stroke-width:1.5" viewBox="0 0 24 24"><path d="M12 3L3 9.5v11H8v-7h8v7h5v-11L12 3z"/></svg></div>
+          <div><div style="font-size:16px;font-weight:700;color:var(--ink)">Appartement 3B</div><div style="font-size:13px;color:var(--muted);margin-top:2px">Dakar Plateau, Sénégal</div><div style="margin-top:6px"><span class="bdg bok">Contrat actif</span></div></div>
+        </div>
+        <div style="display:flex;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+          <div style="flex:1;text-align:center;border-right:1px solid var(--border)"><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.05em">LOYER</div><div style="font-size:14px;font-weight:800;color:var(--ink);margin-top:2px">150 000 F</div></div>
+          <div style="flex:1;text-align:center;border-right:1px solid var(--border)"><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.05em">FIN BAIL</div><div style="font-size:14px;font-weight:800;color:var(--ink);margin-top:2px">Déc. 2026</div></div>
+          <div style="flex:1;text-align:center"><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.05em">PROPRIÉTAIRE</div><div style="font-size:14px;font-weight:800;color:var(--ink);margin-top:2px">A. Mbaye</div></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn bs bsm" style="flex:1" onclick="navT(2,'contracts')">📄 Mon contrat</button>
+          <button class="btn bp bsm" style="flex:1" onclick="navT(3,'messages')">💬 Contacter</button>
+        </div>
+      </div>
+      <div class="sh2"><div class="sh2-t">Derniers paiements</div><div class="sh2-l" onclick="S('pay-hist')">Voir tout</div></div>
+      <div class="card" style="padding:0;overflow:hidden;margin-bottom:22px">
+        <div class="ait"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Avril 2026</div><div class="ait-d">Orange Money · 01/04/2026</div></div><div class="ait-r"><div class="ait-a pos">-150 000</div></div></div>
+        <div class="ait"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Mars 2026</div><div class="ait-d">Wave · 01/03/2026</div></div><div class="ait-r"><div class="ait-a pos">-150 000</div></div></div>
+        <div class="ait" style="border:none"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Février 2026</div><div class="ait-d">Virement · 02/02/2026</div></div><div class="ait-r"><div class="ait-a pos">-150 000</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="tabbar" id="tt">
+    <button class="tbt on" onclick="navT(0,'dt')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M11 3L2 10v10h5v-5h8v5h5V10L11 3z"/></svg></div><span class="tbt-l">Accueil</span></button>
+    <button class="tbt" onclick="navT(1,'payflow')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><rect x="2" y="5" width="18" height="14" rx="2"/><path d="M2 10h18M6 14h4"/></svg></div><span class="tbt-l">Payer</span></button>
+    <button class="tbt" onclick="navT(2,'contracts')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V8l-4-6z"/><path d="M14 2v6h6"/></svg></div><span class="tbt-l">Contrat</span></button>
+    <button class="tbt" onclick="navT(3,'messages')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M20 2H2v14l4-4h14V2z"/></svg></div><span class="tbt-l">Messages</span></button>
+    <button class="tbt" onclick="navT(4,'profile')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><circle cx="11" cy="7" r="4"/><path d="M3 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div><span class="tbt-l">Profil</span></button>
+  </div>
+</div>
+
+<!-- =====================================================
+  DASHBOARD AGENT IMMOBILIER
+===================================================== -->
+<div class="screen hidden" id="da">
+  <div class="sb dk" style="background:linear-gradient(160deg,#081420,#102035)"><span class="t" style="color:white">9:41</span><span class="i" style="color:rgba(255,255,255,.6)">▲▲▲ 🔋</span></div>
+  <div class="ah">
+    <div class="ah-b1"></div><div class="ah-b2"></div>
+    <div class="dh-row" style="position:relative;z-index:1">
+      <div>
+        <div class="dh-gr">Tableau de bord</div>
+        <div class="dh-nm" id="da-nm">Ibrahima Diop 👋</div>
+        <div style="margin-top:5px"><span class="bdg bi">💼 Agent immobilier</span></div>
+      </div>
+      <div class="dh-acts">
+        <button class="hbtn" onclick="S('notifs')"><svg viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3l-2 2v1h16v-1l-2-2V8a6 6 0 00-6-6z"/><path d="M8 17a2 2 0 004 0"/></svg><div class="nred"></div></button>
+        <div class="av av36 avs" id="da-av" style="cursor:pointer" onclick="navA(4,'profile')">ID</div>
+      </div>
+    </div>
+    <div class="sts" style="position:relative;z-index:1">
+      <div style="flex:1;background:rgba(255,255,255,.07);border-radius:14px;padding:12px 10px;border:1px solid rgba(255,255,255,.09)"><div class="st-v">12</div><div class="st-l">Mandats actifs</div></div>
+      <div style="flex:1;background:linear-gradient(135deg,rgba(26,92,174,.8),rgba(10,60,140,.8));border-radius:14px;padding:12px 10px;border:1px solid rgba(26,92,174,.4);box-shadow:0 4px 16px rgba(26,92,174,.28)"><div class="st-v">5</div><div class="st-l" style="color:rgba(255,255,255,.75)">Visites ce mois</div></div>
+      <div style="flex:1;background:rgba(255,255,255,.07);border-radius:14px;padding:12px 10px;border:1px solid rgba(255,255,255,.09)"><div class="st-v">3</div><div class="st-l">Baux signés</div></div>
+    </div>
+  </div>
+  <div class="scroll" style="padding:14px 18px 0">
+    <div class="sh2"><div class="sh2-t">Mes outils</div></div>
+    <div class="qas">
+      <button class="qa" onclick="navA(1,'properties')"><div class="qa-i qs"><svg viewBox="0 0 18 18" style="stroke:var(--sap)"><path d="M9 2L2 7v9h4v-5h6v5h4V7L9 2z"/></svg></div><div class="qa-l">Mes biens</div></button>
+      <button class="qa" onclick="navA(0,'tenants')"><div class="qa-i qo"><svg viewBox="0 0 18 18"><circle cx="9" cy="5" r="4"/><path d="M2 17c0-4 3-7 7-7s7 3 7 7"/></svg></div><div class="qa-l">Clients</div></button>
+      <button class="qa" onclick="navA(2,'contracts')"><div class="qa-i qt"><svg viewBox="0 0 18 18"><path d="M12 2H4a1 1 0 00-1 1v12a1 1 0 001 1h10a1 1 0 001-1V7l-3-5z"/><path d="M12 2v5h4M6 8h4M6 11h6M6 14h3"/></svg></div><div class="qa-l">Mandats</div></button>
+      <button class="qa" onclick="navA(0,'analytics')"><div class="qa-i qg"><svg viewBox="0 0 18 18"><path d="M3 13l4-5 3 3 4-6"/><path d="M3 17h12"/></svg></div><div class="qa-l">Perfs</div></button>
+    </div>
+    <div class="sh2"><div class="sh2-t">Portefeuille actif</div><div class="sh2-l" onclick="navA(1,'properties')">Voir tout</div></div>
+    <!-- Agent property cards -->
+    <div class="card" style="margin-bottom:12px;padding:0;overflow:hidden">
+      <div style="height:80px;background:linear-gradient(135deg,#1A5CAE,#0D3D70);display:flex;align-items:center;justify-content:center;position:relative">
+        <div style="position:absolute;inset:0;opacity:.05;background-image:repeating-linear-gradient(45deg,white 0,white 1px,transparent 0,transparent 50%);background-size:14px 14px"></div>
+        <svg style="width:34px;height:34px;fill:none;stroke:rgba(255,255,255,.45);stroke-width:1.2;stroke-linecap:round;position:relative;z-index:1" viewBox="0 0 34 34"><path d="M17 4L4 12v18h10v-8h6v8h10V12L17 4z"/></svg>
+        <span class="bdg bok" style="position:absolute;top:8px;right:10px">Disponible</span>
+      </div>
+      <div style="padding:13px">
+        <div style="font-size:15px;font-weight:800;color:var(--ink)">Villa F4 — Almadies</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px">📍 Les Almadies, Dakar</div>
+        <div style="display:flex;gap:0;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+          <div style="flex:1;text-align:center;border-right:1px solid var(--border)"><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.05em">LOYER</div><div style="font-size:13px;font-weight:800;color:var(--ink);margin-top:2px">350 000 F</div></div>
+          <div style="flex:1;text-align:center;border-right:1px solid var(--border)"><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.05em">COMMISSION</div><div style="font-size:13px;font-weight:800;color:var(--terra);margin-top:2px">35 000 F</div></div>
+          <div style="flex:1;text-align:center"><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.05em">VISITES</div><div style="font-size:13px;font-weight:800;color:var(--sap);margin-top:2px">3 prévues</div></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:11px">
+          <button class="cc-out" style="flex:1" onclick="toast('📅 Visite planifiée avec succès !')">📅 Planifier visite</button>
+          <button class="cc-fil" style="flex:1" onclick="navA(3,'messages')">💬 Contacter</button>
+        </div>
+      </div>
+    </div>
+    <div class="sh2" style="margin-top:4px"><div class="sh2-t">Activité récente</div></div>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:22px">
+      <div class="ait"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Bail signé — Villa Almadies</div><div class="ait-d">Propriétaire : M. Kane · Commission reçue</div></div><div class="ait-r"><div class="ait-a pos">+35 000</div></div></div>
+      <div class="ait"><div class="ait-ic ic-i"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l2 2"/></svg></div><div class="ait-b"><div class="ait-n">Visite planifiée</div><div class="ait-d">Appt. Plateau · Coumba Sy · Demain 14h</div></div><div class="ait-r"><div style="font-size:11px;color:var(--sap);font-weight:700">Demain</div></div></div>
+      <div class="ait" style="border:none"><div class="ait-ic ic-w"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l2 2"/></svg></div><div class="ait-b"><div class="ait-n">Mandat à renouveler</div><div class="ait-d">Villa F3 · Propriétaire : A. Ndiaye</div></div><div class="ait-r"><div style="font-size:11px;color:var(--warn);font-weight:700">J-5</div></div></div>
+    </div>
+  </div>
+  <div class="tabbar" id="ta">
+    <button class="tbt on" onclick="navA(0,'da')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M11 3L2 10v10h5v-5h8v5h5V10L11 3z"/></svg></div><span class="tbt-l">Accueil</span></button>
+    <button class="tbt" onclick="navA(1,'properties')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div><span class="tbt-l">Biens</span></button>
+    <button class="tbt" onclick="navA(2,'contracts')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V8l-4-6z"/><path d="M14 2v6h6"/></svg></div><span class="tbt-l">Mandats</span></button>
+    <button class="tbt" onclick="navA(3,'messages')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M20 2H2v14l4-4h14V2z"/></svg></div><span class="tbt-l">Messages</span></button>
+    <button class="tbt" onclick="navA(4,'profile')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><circle cx="11" cy="7" r="4"/><path d="M3 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div><span class="tbt-l">Profil</span></button>
+  </div>
+</div>
+
+<!-- =====================================================
+  PROPERTIES
+===================================================== -->
+<div class="screen hidden" id="properties">
+  <div class="sb lt"><span class="t">9:41</span><span class="i">▲▲▲ 🔋</span></div>
+  <div class="ph"><div class="ph-r"><button class="bk" onclick="back()"><svg viewBox="0 0 18 18"><path d="M11 4L6 9l5 5"/></svg></button><div><div class="ph-tl">Mes propriétés</div><div class="ph-st">4 biens enregistrés</div></div><button class="btn bp bsm" style="margin-left:auto;white-space:nowrap" onclick="openAddProp()">+ Ajouter</button></div></div>
+  <div class="scroll" style="padding:14px 18px">
+    <div class="pcard" onclick="toast('🏠 Villa Almadies — Détails en cours de chargement')">
+      <div class="pcard-img" style="background:linear-gradient(135deg,#C8503A,#8B3226)"><div class="pcard-img-pat"></div><svg viewBox="0 0 56 56"><path d="M28 7L7 22v27h14v-13h14v13h14V22L28 7z"/></svg><div class="pcard-bdg"><span class="bdg bok">Occupé</span></div></div>
+      <div class="pcard-b">
+        <div class="pcard-n">Appartement 3B</div><div class="pcard-a">📍 Dakar Plateau, Sénégal</div>
+        <div class="pcard-m"><div class="pm-i"><div class="pm-il">Loyer</div><div class="pm-iv">150 000 F</div></div><div class="pm-i"><div class="pm-il">Locataire</div><div class="pm-iv">F. Diallo</div></div><div class="pm-i"><div class="pm-il">Statut</div><div class="pm-iv" style="color:var(--ok)">Payé ✓</div></div></div>
+        <div style="display:flex;gap:8px;margin-top:12px"><button class="cc-out" style="flex:1" onclick="event.stopPropagation();S('tenant-d')">Voir locataire</button><button class="cc-fil" style="flex:1" onclick="event.stopPropagation();S('messages')">Message</button></div>
+      </div>
+    </div>
+    <div class="pcard" onclick="toast('🏡 Villa 2 — Détails chargés')">
+      <div class="pcard-img" style="background:linear-gradient(135deg,#3A7828,#1E5010)"><div class="pcard-img-pat"></div><svg viewBox="0 0 56 56"><path d="M28 7L7 22v27h14v-13h14v13h14V22L28 7z"/></svg><div class="pcard-bdg"><span class="bdg bw">En attente</span></div></div>
+      <div class="pcard-b">
+        <div class="pcard-n">Villa 2 — Almadies</div><div class="pcard-a">📍 Les Almadies, Dakar</div>
+        <div class="pcard-m"><div class="pm-i"><div class="pm-il">Loyer</div><div class="pm-iv">200 000 F</div></div><div class="pm-i"><div class="pm-il">Locataire</div><div class="pm-iv">M. Ndiaye</div></div><div class="pm-i"><div class="pm-il">Statut</div><div class="pm-iv" style="color:var(--warn)">En attente</div></div></div>
+        <div style="display:flex;gap:8px;margin-top:12px"><button class="cc-out" style="flex:1" onclick="event.stopPropagation();toast('👤 Profil Moussa Ndiaye')">Voir locataire</button><button class="cc-fil" style="flex:1" onclick="event.stopPropagation();S('messages')">Rappel</button></div>
+      </div>
+    </div>
+    <div class="pcard" onclick="toast('🏢 Appt. 1A — Détails chargés')">
+      <div class="pcard-img" style="background:linear-gradient(135deg,#1A5CAE,#0D3870)"><div class="pcard-img-pat"></div><svg viewBox="0 0 56 56"><path d="M28 7L7 22v27h14v-13h14v13h14V22L28 7z"/></svg><div class="pcard-bdg"><span class="bdg bd">En retard</span></div></div>
+      <div class="pcard-b">
+        <div class="pcard-n">Appartement 1A</div><div class="pcard-a">📍 Mermoz, Dakar</div>
+        <div class="pcard-m"><div class="pm-i"><div class="pm-il">Loyer</div><div class="pm-iv">175 000 F</div></div><div class="pm-i"><div class="pm-il">Locataire</div><div class="pm-iv">A. Sow</div></div><div class="pm-i"><div class="pm-il">Retard</div><div class="pm-iv" style="color:var(--err)">5 jours ⚠️</div></div></div>
+        <div style="display:flex;gap:8px;margin-top:12px"><button class="cc-out" style="flex:1" onclick="event.stopPropagation();toast('👤 Profil Aïssatou Sow')">Voir locataire</button><button class="cc-fil" style="background:var(--err);flex:1" onclick="event.stopPropagation();S('messages')">Rappel urgent</button></div>
+      </div>
+    </div>
+    <div class="pcard" onclick="toast('🏠 Studio — Disponible à la location')">
+      <div class="pcard-img" style="background:linear-gradient(135deg,#7A5830,#4A3018)"><div class="pcard-img-pat"></div><svg viewBox="0 0 56 56"><path d="M28 7L7 22v27h14v-13h14v13h14V22L28 7z"/></svg><div class="pcard-bdg"><span class="bdg bn">Vacant</span></div></div>
+      <div class="pcard-b">
+        <div class="pcard-n">Studio Corniche</div><div class="pcard-a">📍 Corniche Ouest, Dakar</div>
+        <div class="pcard-m"><div class="pm-i"><div class="pm-il">Loyer</div><div class="pm-iv">120 000 F</div></div><div class="pm-i"><div class="pm-il">Locataire</div><div class="pm-iv" style="color:var(--hint)">Aucun</div></div><div class="pm-i"><div class="pm-il">Statut</div><div class="pm-iv" style="color:var(--muted)">Vacant</div></div></div>
+        <div style="display:flex;gap:8px;margin-top:12px"><button class="cc-out" style="flex:1" onclick="event.stopPropagation();toast('📋 Publier une annonce')">Publier</button><button class="cc-fil" style="flex:1" onclick="event.stopPropagation();openAddTenant()">+ Locataire</button></div>
+      </div>
+    </div>
+    <div style="height:14px"></div>
+  </div>
+</div>
+
+<!-- =====================================================
+  TENANTS
+===================================================== -->
+<div class="screen hidden" id="tenants">
+  <div class="sb lt"><span class="t">9:41</span><span class="i">▲▲▲ 🔋</span></div>
+  <div class="ph"><div class="ph-r"><button class="bk" onclick="back()"><svg viewBox="0 0 18 18"><path d="M11 4L6 9l5 5"/></svg></button><div><div class="ph-tl">Locataires</div><div class="ph-st">3 locataires actifs</div></div></div></div>
+  <div style="padding:11px 18px;background:var(--card);border-bottom:1px solid var(--border)"><input class="fi" type="text" placeholder="🔍  Rechercher un locataire..." style="margin:0" id="tenant-search" oninput="filterTenants(this.value)"></div>
+  <div class="scroll" id="tenant-list">
+    <div class="ti" onclick="S('tenant-d')"><div class="av av48 avt">FD</div><div class="ti-b"><div class="ti-n">Fatou Diallo</div><div class="ti-p">Appt. 3B · Dakar Plateau</div><div style="margin-top:5px"><span class="bdg bok">Paiement à jour</span></div></div><svg style="width:15px;height:15px;fill:none;stroke:var(--hint);stroke-width:2" viewBox="0 0 15 15"><path d="M5 4l4 4-4 4"/></svg></div>
+    <div class="ti" onclick="openTenantSheet('Moussa Ndiaye','MN','avs','Villa 2 · Almadies','200 000','En attente')"><div class="av av48 avs">MN</div><div class="ti-b"><div class="ti-n">Moussa Ndiaye</div><div class="ti-p">Villa 2 · Almadies</div><div style="margin-top:5px"><span class="bdg bw">Paiement en attente</span></div></div><svg style="width:15px;height:15px;fill:none;stroke:var(--hint);stroke-width:2" viewBox="0 0 15 15"><path d="M5 4l4 4-4 4"/></svg></div>
+    <div class="ti" onclick="openTenantSheet('Aïssatou Sow','AS','avo','Appt. 1A · Mermoz','175 000','5 jours de retard')"><div class="av av48 avo">AS</div><div class="ti-b"><div class="ti-n">Aïssatou Sow</div><div class="ti-p">Appt. 1A · Mermoz</div><div style="margin-top:5px"><span class="bdg bd">5 jours de retard ⚠️</span></div></div><svg style="width:15px;height:15px;fill:none;stroke:var(--hint);stroke-width:2" viewBox="0 0 15 15"><path d="M5 4l4 4-4 4"/></svg></div>
+  </div>
+</div>
+
+<!-- =====================================================
+  TENANT DETAIL
+===================================================== -->
+<div class="screen hidden" id="tenant-d">
+  <div class="sb dk" style="background:linear-gradient(160deg,#0C0A07,#1E160E)"><span class="t" style="color:white">9:41</span><span class="i" style="color:rgba(255,255,255,.6)">▲▲▲ 🔋</span></div>
+  <div style="background:linear-gradient(160deg,#0C0A07,#1E160E);padding:0 18px 26px;flex-shrink:0;position:relative;overflow:hidden">
+    <div style="position:absolute;border-radius:50%;filter:blur(50px);opacity:.28;width:260px;height:260px;background:radial-gradient(circle,#C8503A,transparent);top:-110px;right:-70px;pointer-events:none"></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;position:relative;z-index:1">
+      <button class="bk" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.1)" onclick="back()"><svg viewBox="0 0 18 18" style="stroke:white!important"><path d="M11 4L6 9l5 5"/></svg></button>
+      <div style="font-size:16px;font-weight:600;color:white">Profil locataire</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;position:relative;z-index:1">
+      <div class="av av64 avt">FD</div>
+      <div><div style="font-size:21px;font-weight:800;color:white;letter-spacing:-.4px">Fatou Diallo</div><div style="font-size:13px;color:rgba(255,255,255,.5);margin-top:3px">+221 77 123 45 67</div><div style="margin-top:8px"><span class="bdg bok">Locataire actif</span></div></div>
+    </div>
+  </div>
+  <div class="scroll" style="padding:14px 18px">
+    <div class="sh2"><div class="sh2-t">Informations du bail</div></div>
+    <div class="card" style="margin-bottom:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.06em">PROPRIÉTÉ</div><div style="font-size:14px;font-weight:700;color:var(--ink);margin-top:3px">Appt. 3B</div></div>
+        <div><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.06em">LOYER/MOIS</div><div style="font-size:14px;font-weight:700;color:var(--ink);margin-top:3px">150 000 F CFA</div></div>
+        <div><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.06em">DÉBUT BAIL</div><div style="font-size:14px;font-weight:700;color:var(--ink);margin-top:3px">1 jan. 2025</div></div>
+        <div><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.06em">FIN BAIL</div><div style="font-size:14px;font-weight:700;color:var(--ink);margin-top:3px">31 déc. 2026</div></div>
+        <div><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.06em">CAUTION</div><div style="font-size:14px;font-weight:700;color:var(--ink);margin-top:3px">300 000 F CFA</div></div>
+        <div><div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:.06em">STATUT</div><div style="font-size:14px;font-weight:700;color:var(--ok);margin-top:3px">✓ À jour</div></div>
+      </div>
+    </div>
+    <div class="sh2"><div class="sh2-t">Historique (3 derniers mois)</div></div>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px">
+      <div class="ait"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Avril 2026</div><div class="ait-d">Orange Money · 01/04</div></div><div class="ait-r"><div class="ait-a pos">+150 000</div></div></div>
+      <div class="ait"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Mars 2026</div><div class="ait-d">Wave · 01/03</div></div><div class="ait-r"><div class="ait-a pos">+150 000</div></div></div>
+      <div class="ait" style="border:none"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Février 2026</div><div class="ait-d">Virement · 02/02</div></div><div class="ait-r"><div class="ait-a pos">+150 000</div></div></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:20px">
+      <button class="btn bp" style="flex:1" onclick="S('messages')"><svg style="width:16px;height:16px;fill:none;stroke:white;stroke-width:2" viewBox="0 0 16 16"><path d="M14 2H2v10l3-3h9V2z"/></svg>Message</button>
+      <button class="btn bs" style="flex:1" onclick="S('contracts')">📄 Contrat</button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+  PAYMENT FLOW
+===================================================== -->
+<div class="screen hidden" id="payflow">
+  <div class="sb lt"><span class="t">9:41</span><span class="i">▲▲▲ 🔋</span></div>
+  <div class="ph"><div class="ph-r"><button class="bk" onclick="back()"><svg viewBox="0 0 18 18"><path d="M11 4L6 9l5 5"/></svg></button><div><div class="ph-tl">Payer mon loyer</div><div class="ph-st">Mai 2026</div></div></div></div>
+  <div class="scroll" style="padding:0 18px 20px">
+    <div class="due" style="margin:14px 0">
+      <div class="due-d1"></div><div class="due-d2"></div>
+      <div style="position:relative;z-index:1">
+        <div class="due-lbl">Montant dû ce mois</div>
+        <div class="due-amt">150 000 <span class="due-cur">F CFA</span></div>
+        <div class="due-dt"><svg style="width:13px;height:13px;flex-shrink:0" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="9" height="9" rx="1.5"/><path d="M4.5 1v2M8.5 1v2M2 5.5h9"/></svg>Échéance : 1ᵉʳ mai 2026</div>
+        <div class="due-prop">📍 Appartement 3B — Amadou Mbaye</div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.07em;margin-bottom:12px">CHOISIR UN MODE DE PAIEMENT</div>
+    <div class="pm on" id="pm-wave" onclick="selPM(this,'wave')">
+      <div class="pm-logo" style="background:linear-gradient(135deg,#0070F0,#0050C0)"><svg viewBox="0 0 32 32" style="width:26px;height:26px"><circle cx="16" cy="16" r="12" fill="rgba(0,0,0,.2)"/><path d="M9 16c1.5-3 3-5 4-5s2.5 4 4 4 2.5-4 4-4" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="pm-info"><div class="pm-name">Wave</div><div class="pm-desc">Transfert instantané · Sans frais · Sénégal</div><div style="display:flex;gap:5px;margin-top:4px"><span class="bdg bok" style="font-size:10px">✓ Gratuit</span><span class="bdg bi" style="font-size:10px">⚡ Instantané</span></div></div>
+      <div class="radio on" id="r-wave"></div>
+    </div>
+    <div class="pm" id="pm-om" onclick="selPM(this,'om')">
+      <div class="pm-logo" style="background:linear-gradient(135deg,#FF7800,#E05000)"><svg viewBox="0 0 32 32" style="width:26px;height:26px"><circle cx="16" cy="16" r="11" fill="rgba(255,255,255,.15)"/><path d="M11 12c0-2.8 2.2-5 5-5s5 2.2 5 5v3a5 5 0 01-10 0v-3z" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <div class="pm-info"><div class="pm-name">Orange Money</div><div class="pm-desc">Mobile money · Sénégal, Côte d'Ivoire, Mali...</div><div style="display:flex;gap:5px;margin-top:4px"><span class="bdg bok" style="font-size:10px">✓ Gratuit</span><span class="bdg bn" style="font-size:10px">#144#</span></div></div>
+      <div class="radio" id="r-om"></div>
+    </div>
+    <div class="pm" id="pm-mtn" onclick="selPM(this,'mtn')">
+      <div class="pm-logo" style="background:linear-gradient(135deg,#FFC200,#E0A000)"><svg viewBox="0 0 32 32" style="width:26px;height:26px"><path d="M8 20l4-10 4 8 4-8 4 10" fill="none" stroke="#333" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="pm-info"><div class="pm-name">MTN Mobile Money</div><div class="pm-desc">Disponible partout en Afrique de l'Ouest</div><div style="display:flex;gap:5px;margin-top:4px"><span class="bdg bok" style="font-size:10px">✓ Gratuit</span><span class="bdg bn" style="font-size:10px">*170#</span></div></div>
+      <div class="radio" id="r-mtn"></div>
+    </div>
+    <div class="pm" id="pm-free" onclick="selPM(this,'free')">
+      <div class="pm-logo" style="background:linear-gradient(135deg,#00AA00,#007700)"><svg viewBox="0 0 32 32" style="width:26px;height:26px"><rect x="8" y="10" width="16" height="12" rx="3" fill="none" stroke="white" stroke-width="2"/><path d="M12 10V8a4 4 0 018 0v2" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="16" r="2" fill="white"/></svg></div>
+      <div class="pm-info"><div class="pm-name">Free Money</div><div class="pm-desc">Paiement mobile Free Sénégal</div><div style="display:flex;gap:5px;margin-top:4px"><span class="bdg bok" style="font-size:10px">✓ Gratuit</span><span class="bdg bn" style="font-size:10px">*555#</span></div></div>
+      <div class="radio" id="r-free"></div>
+    </div>
+    <div class="pm" id="pm-expresso" onclick="selPM(this,'expresso')">
+      <div class="pm-logo" style="background:linear-gradient(135deg,#DD0000,#990000)"><svg viewBox="0 0 32 32" style="width:26px;height:26px"><path d="M10 16a6 6 0 0112 0" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"/><circle cx="16" cy="18" r="3" fill="none" stroke="white" stroke-width="2"/></svg></div>
+      <div class="pm-info"><div class="pm-name">Expresso / Tigo</div><div class="pm-desc">Tigo Cash · Expresso Money Sénégal</div><div style="display:flex;gap:5px;margin-top:4px"><span class="bdg bok" style="font-size:10px">✓ Gratuit</span><span class="bdg bn" style="font-size:10px">*888#</span></div></div>
+      <div class="radio" id="r-expresso"></div>
+    </div>
+    <div class="pm" id="pm-bank" onclick="selPM(this,'bank')">
+      <div class="pm-logo" style="background:linear-gradient(135deg,#1A5CAE,#0D3870)"><svg viewBox="0 0 32 32" style="width:26px;height:26px;fill:none;stroke:white;stroke-width:2;stroke-linecap:round"><path d="M6 14h20M6 20h20M16 8v16M5 14l11-6 11 6"/></svg></div>
+      <div class="pm-info"><div class="pm-name">Virement bancaire</div><div class="pm-desc">CBAO · SGBS · BIS · Ecobank · BDK · BSIC</div><div style="display:flex;gap:5px;margin-top:4px"><span class="bdg bi" style="font-size:10px">Sécurisé</span><span class="bdg bn" style="font-size:10px">1-2 jours</span></div></div>
+      <div class="radio" id="r-bank"></div>
+    </div>
+    <div style="background:var(--softer);border-radius:14px;padding:14px;margin:16px 0;border:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)"><span style="font-size:14px;color:var(--muted)">Loyer mai 2026</span><span style="font-size:14px;font-weight:700">150 000 F CFA</span></div>
+      <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)"><span style="font-size:14px;color:var(--muted)">Frais de traitement</span><span style="font-size:14px;font-weight:700;color:var(--ok)">Gratuit</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0"><span style="font-size:15px;font-weight:700">Total à payer</span><span style="font-size:16px;font-weight:800;color:var(--terra)">150 000 F CFA</span></div>
+    </div>
+    <button class="btn bp" style="font-size:15px;padding:15px" onclick="goPayConfirm()">
+      <svg style="width:17px;height:17px;fill:none;stroke:white;stroke-width:2" viewBox="0 0 17 17"><rect x="2" y="4" width="13" height="10" rx="2"/><path d="M2 7h13M5 11h4"/></svg>
+      Continuer vers le paiement
+    </button>
+  </div>
+</div>
+
+<!-- =====================================================
+  PAY CONFIRM
+===================================================== -->
+<div class="screen hidden" id="pay-confirm">
+  <div class="sb lt"><span class="t">9:41</span><span class="i">▲▲▲ 🔋</span></div>
+  <div class="ph"><div class="ph-r"><button class="bk" onclick="back()"><svg viewBox="0 0 18 18"><path d="M11 4L6 9l5 5"/></svg></button><div class="ph-tl">Confirmer le paiement</div></div></div>
+  <div class="scroll" style="padding:18px">
+
+    <!-- Résumé dynamique selon méthode -->
+    <div class="card" style="text-align:center;padding:22px;margin-bottom:16px">
+      <div id="conf-logo" style="font-size:48px;margin-bottom:10px">🌊</div>
+      <div id="conf-method-lbl" style="font-size:13px;color:var(--muted);font-weight:600;margin-bottom:8px">Paiement via Wave</div>
+      <div style="font-size:38px;font-weight:800;color:var(--ink);letter-spacing:-1.5px">150 000</div>
+      <div style="font-size:15px;color:var(--muted);font-weight:500">F CFA</div>
+    </div>
+
+    <!-- Détails de la transaction -->
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px">
+      <div style="padding:12px 15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--muted)">Bénéficiaire</span><span style="font-size:13px;font-weight:700">Amadou Mbaye</span></div>
+      <div style="padding:12px 15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--muted)">Propriété</span><span style="font-size:13px;font-weight:700">Appt. 3B — Dakar Plateau</span></div>
+      <div style="padding:12px 15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--muted)">Période</span><span style="font-size:13px;font-weight:700">Mai 2026</span></div>
+      <div id="conf-account-row" style="padding:12px 15px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--muted)" id="conf-account-lbl">Compte Wave</span><span style="font-size:13px;font-weight:700" id="conf-account-val">+221 77 *** ** **</span></div>
+    </div>
+
+    <!-- Instructions spécifiques à la méthode -->
+    <div id="conf-instructions" style="border-radius:13px;padding:13px 14px;margin-bottom:16px;display:flex;gap:10px;border:1px solid transparent"></div>
+
+    <!-- Saisie du numéro pour mobile money -->
+    <div id="conf-phone-section" style="margin-bottom:16px">
+      <div class="fl" id="conf-phone-lbl">Votre numéro Wave</div>
+      <div style="position:relative">
+        <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:700;color:var(--muted)">+221</div>
+        <input class="fi" type="tel" id="conf-phone" placeholder="77 000 00 00" style="padding-left:56px" maxlength="12">
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:6px" id="conf-phone-hint">Vous recevrez une notification Wave pour confirmer</div>
+    </div>
+
+    <!-- Section virement bancaire (cachée par défaut) -->
+    <div id="conf-bank-section" style="display:none;margin-bottom:16px">
+      <div style="background:var(--sap-l);border-radius:13px;padding:14px;border:1px solid rgba(26,92,174,.2)">
+        <div style="font-size:13px;font-weight:700;color:var(--sap);margin-bottom:10px">📋 Informations de virement</div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(26,92,174,.1)"><span style="font-size:13px;color:var(--muted)">Banque</span><span style="font-size:13px;font-weight:700">CBAO Sénégal</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(26,92,174,.1)"><span style="font-size:13px;color:var(--muted)">Titulaire</span><span style="font-size:13px;font-weight:700">Amadou Mbaye</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(26,92,174,.1)"><span style="font-size:13px;color:var(--muted)">IBAN</span><span style="font-size:13px;font-weight:700">SN28 1001 0023 4567 8901</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(26,92,174,.1)"><span style="font-size:13px;color:var(--muted)">Référence</span><span style="font-size:13px;font-weight:700;color:var(--terra)">PTL-2026-05</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0"><span style="font-size:13px;color:var(--muted)">Montant exact</span><span style="font-size:13px;font-weight:700">150 000 F CFA</span></div>
+        <button class="btn bp bsm" style="margin-top:12px;width:100%" onclick="copyIBAN()">📋 Copier les coordonnées bancaires</button>
+      </div>
+    </div>
+
+    <button class="btn bp" style="font-size:15px;padding:15px;margin-bottom:10px" id="pay-btn" onclick="doPay()">
+      🔒 Payer 150 000 F CFA
+    </button>
+    <button class="btn bg" onclick="back()">Annuler</button>
+  </div>
+</div>
+
+<!-- =====================================================
+  PAY SUCCESS
+===================================================== -->
+<div class="screen hidden" id="pay-ok">
+  <div class="sb lt"><span class="t">9:41</span><span class="i">▲▲▲ 🔋</span></div>
+  <div class="suc-body">
+    <div class="suc-ic"><svg viewBox="0 0 42 42"><path d="M8 21l9 9 17-17"/></svg></div>
+    <div style="font-size:25px;font-weight:800;color:var(--ink);letter-spacing:-.5px;margin-bottom:7px">Paiement réussi ! 🎉</div>
+    <div style="font-size:14px;color:var(--muted);line-height:1.62;margin-bottom:0;max-width:280px">Votre loyer de mai 2026 a bien été réglé. Un reçu a été envoyé par email.</div>
+    <div class="rct" style="margin-top:20px;margin-bottom:24px;width:100%">
+      <div class="rr"><span class="rl">Référence</span><span class="rv">PTL-2026-05-001</span></div>
+      <div class="rr"><span class="rl">Montant</span><span class="rv g">150 000 F CFA</span></div>
+      <div class="rr"><span class="rl">Méthode</span><span class="rv">Orange Money</span></div>
+      <div class="rr"><span class="rl">Date</span><span class="rv">25 avr. 2026, 09:41</span></div>
+      <div class="rr"><span class="rl">Statut</span><span class="rv g">✓ Confirmé</span></div>
+    </div>
+    <button class="btn bp" style="margin-bottom:10px" onclick="S('dt')">Retour à l'accueil</button>
+    <button class="btn bg" onclick="toast('📄 Reçu PDF téléchargé')">Télécharger le reçu PDF</button>
+  </div>
+</div>
+
+<!-- =====================================================
+  PAYMENTS LANDLORD
+===================================================== -->
+<div class="screen hidden" id="payments-l">
+  <div class="sb lt"><span class="t">9:41</span><span class="i">▲▲▲ 🔋</span></div>
+  <div class="ph"><div class="ph-r"><button class="bk" onclick="back()"><svg viewBox="0 0 18 18"><path d="M11 4L6 9l5 5"/></svg></button><div><div class="ph-tl">Paiements</div><div class="ph-st">Mai 2026</div></div></div></div>
+  <div class="ftabs">
+    <button class="ft on" id="ft-all" onclick="filterPay('all')">Tous</button>
+    <button class="ft" id="ft-ok" onclick="filterPay('ok')">✓ Payés</button>
+    <button class="ft" id="ft-w" onclick="filterPay('w')">⏳ En attente</button>
+    <button class="ft" id="ft-d" onclick="filterPay('d')">⚠️ En retard</button>
+  </div>
+  <div style="background:linear-gradient(135deg,#F5EDE8,#EDE4DC);padding:14px 18px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border)">
+    <div style="text-align:center"><div style="font-size:17px;font-weight:800;color:var(--ok)">150 000</div><div style="font-size:10px;color:var(--ok);font-weight:700;letter-spacing:.05em;margin-top:2px;opacity:.85">REÇU (F)</div></div>
+    <div style="width:1px;background:var(--border)"></div>
+    <div style="text-align:center"><div style="font-size:17px;font-weight:800;color:var(--warn)">200 000</div><div style="font-size:10px;color:var(--warn);font-weight:700;letter-spacing:.05em;margin-top:2px;opacity:.85">EN ATTENTE</div></div>
+    <div style="width:1px;background:var(--border)"></div>
+    <div style="text-align:center"><div style="font-size:17px;font-weight:800;color:var(--err)">175 000</div><div style="font-size:10px;color:var(--err);font-weight:700;letter-spacing:.05em;margin-top:2px;opacity:.85">EN RETARD</div></div>
+  </div>
+  <div class="scroll" id="pay-list">
+    <div class="slbl">Mai 2026 — en cours</div>
+    <div class="card" style="margin:0 18px 12px;padding:0;overflow:hidden" id="pay-items">
+      <div class="ait pay-row" data-s="ok"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Fatou Diallo</div><div class="ait-d">Appt. 3B · Orange Money · Aujourd'hui</div></div><div class="ait-r"><div class="ait-a pos">+150 000</div><div class="bdg bok" style="margin-top:3px">Payé</div></div></div>
+      <div class="ait pay-row" data-s="w"><div class="ait-ic ic-w"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l2 2"/></svg></div><div class="ait-b"><div class="ait-n">Moussa Ndiaye</div><div class="ait-d">Villa 2 · Échéance 01/05 · J-6</div></div><div class="ait-r"><div class="ait-a neu">200 000</div><div class="bdg bw" style="margin-top:3px">Attente</div></div></div>
+      <div class="ait pay-row" data-s="d" style="border:none"><div class="ait-ic ic-d"><svg viewBox="0 0 20 20"><path d="M10 2l8 16H2z"/><path d="M10 9v4M10 15v1"/></svg></div><div class="ait-b"><div class="ait-n">Aïssatou Sow</div><div class="ait-d">Appt. 1A · 5 jours de retard ⚠️</div></div><div class="ait-r"><div class="ait-a neg">175 000</div><div class="bdg bd" style="margin-top:3px">Retard</div></div></div>
+    </div>
+    <div class="slbl">Avril 2026</div>
+    <div class="card" style="margin:0 18px 16px;padding:0;overflow:hidden">
+      <div class="ait"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Fatou Diallo</div><div class="ait-d">Appt. 3B · Orange Money · 01/04</div></div><div class="ait-r"><div class="ait-a pos">+150 000</div><div class="bdg bok" style="margin-top:3px">Payé</div></div></div>
+      <div class="ait"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Moussa Ndiaye</div><div class="ait-d">Villa 2 · Wave · 03/04</div></div><div class="ait-r"><div class="ait-a pos">+200 000</div><div class="bdg bok" style="margin-top:3px">Payé</div></div></div>
+      <div class="ait" style="border:none"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Aïssatou Sow</div><div class="ait-d">Appt. 1A · Virement · 01/04</div></div><div class="ait-r"><div class="ait-a pos">+175 000</div><div class="bdg bok" style="margin-top:3px">Payé</div></div></div>
+    </div>
+  </div>
+  <div class="tabbar">
+    <button class="tbt" onclick="navL(0,'dl')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M11 3L2 10v10h5v-5h8v5h5V10L11 3z"/></svg></div><span class="tbt-l">Accueil</span></button>
+    <button class="tbt on" onclick="navL(1,'payments-l')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><rect x="2" y="5" width="18" height="14" rx="2"/><path d="M2 10h18M6 14h4"/></svg></div><span class="tbt-l">Paiements</span></button>
+    <button class="tbt" onclick="navL(2,'contracts')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V8l-4-6z"/><path d="M14 2v6h6"/></svg></div><span class="tbt-l">Contrats</span></button>
+    <button class="tbt" onclick="navL(3,'messages')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M20 2H2v14l4-4h14V2z"/></svg></div><span class="tbt-l">Messages</span></button>
+    <button class="tbt" onclick="navL(4,'profile')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><circle cx="11" cy="7" r="4"/><path d="M3 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div><span class="tbt-l">Profil</span></button>
+  </div>
+</div>
+
+<!-- =====================================================
+  PAY HISTORY (Locataire)
+===================================================== -->
+<div class="screen hidden" id="pay-hist">
+  <div class="sb lt"><span class="t">9:41</span><span class="i">▲▲▲ 🔋</span></div>
+  <div class="ph"><div class="ph-r"><button class="bk" onclick="back()"><svg viewBox="0 0 18 18"><path d="M11 4L6 9l5 5"/></svg></button><div><div class="ph-tl">Mes paiements</div><div class="ph-st">Historique complet</div></div></div></div>
+  <div class="scroll" style="padding:14px 18px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px">
+      <div class="card" style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.06em">TOTAL PAYÉ</div><div style="font-size:22px;font-weight:800;color:var(--ok);margin:5px 0">1.95M</div><div style="font-size:12px;color:var(--muted)">F CFA</div></div>
+      <div class="card" style="text-align:center"><div style="font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.06em">PAIEMENTS</div><div style="font-size:22px;font-weight:800;color:var(--ink);margin:5px 0">13</div><div style="font-size:12px;color:var(--ok)">✓ 100% à temps</div></div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div class="ait"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Mai 2026</div><div class="ait-d">Orange Money · 25/04/2026</div></div><div class="ait-r"><div class="ait-a pos">-150 000 F</div></div></div>
+      <div class="ait"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Avril 2026</div><div class="ait-d">Orange Money · 01/04/2026</div></div><div class="ait-r"><div class="ait-a pos">-150 000 F</div></div></div>
+      <div class="ait"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Mars 2026</div><div class="ait-d">Wave · 01/03/2026</div></div><div class="ait-r"><div class="ait-a pos">-150 000 F</div></div></div>
+      <div class="ait"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Février 2026</div><div class="ait-d">Virement SGBS · 02/02/2026</div></div><div class="ait-r"><div class="ait-a pos">-150 000 F</div></div></div>
+      <div class="ait" style="border:none"><div class="ait-ic ic-ok"><svg viewBox="0 0 20 20"><path d="M5 10l4 4 6-7"/></svg></div><div class="ait-b"><div class="ait-n">Janvier 2026</div><div class="ait-d">Orange Money · 01/01/2026</div></div><div class="ait-r"><div class="ait-a pos">-150 000 F</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+  CONTRACTS
+===================================================== -->
+<div class="screen hidden" id="contracts">
+  <div class="sb lt"><span class="t">9:41</span><span class="i">▲▲▲ 🔋</span></div>
+  <div class="ph"><div class="ph-r"><button class="bk" onclick="back()"><svg viewBox="0 0 18 18"><path d="M11 4L6 9l5 5"/></svg></button><div><div class="ph-tl">Contrats</div><div class="ph-st">3 baux actifs</div></div><button class="btn bp bsm" style="margin-left:auto;white-space:nowrap" onclick="toast('📤 Importer un contrat PDF')">+ Nouveau</button></div></div>
+  <div class="scroll" style="padding:14px 18px">
+    <div class="cc">
+      <div class="cc-h"><div><div class="cc-n">Appartement 3B</div><div class="cc-a">📍 Dakar Plateau, Sénégal</div></div><span class="bdg bok">Actif</span></div>
+      <div class="cc-g"><div><div class="cc-fl">Locataire</div><div class="cc-fv">Fatou Diallo</div></div><div><div class="cc-fl">Loyer/mois</div><div class="cc-fv">150 000 F</div></div><div><div class="cc-fl">Début</div><div class="cc-fv">1 jan. 2025</div></div><div><div class="cc-fl">Fin</div><div class="cc-fv">31 déc. 2026</div></div></div>
+      <div class="cc-acts"><button class="cc-out" onclick="toast('📄 Ouverture du contrat PDF...')">📄 Voir PDF</button><button class="cc-fil" onclick="openSignSheet('Fatou Diallo','Appt. 3B')">✍️ Signer</button></div>
+    </div>
+    <div class="cc">
+      <div class="cc-h"><div><div class="cc-n">Villa 2 — Almadies</div><div class="cc-a">📍 Les Almadies, Dakar</div></div><span class="bdg bok">Actif</span></div>
+      <div class="cc-g"><div><div class="cc-fl">Locataire</div><div class="cc-fv">Moussa Ndiaye</div></div><div><div class="cc-fl">Loyer/mois</div><div class="cc-fv">200 000 F</div></div><div><div class="cc-fl">Début</div><div class="cc-fv">1 mars 2024</div></div><div><div class="cc-fl">Fin</div><div class="cc-fv">28 fév. 2027</div></div></div>
+      <div class="cc-acts"><button class="cc-out" onclick="toast('📄 Ouverture du contrat PDF...')">📄 Voir PDF</button><button class="cc-fil" onclick="openSignSheet('Moussa Ndiaye','Villa 2')">✍️ Signer</button></div>
+    </div>
+    <div class="cc">
+      <div class="cc-h"><div><div class="cc-n">Appartement 1A</div><div class="cc-a">📍 Mermoz, Dakar</div></div><span class="bdg bw">À renouveler</span></div>
+      <div class="cc-g"><div><div class="cc-fl">Locataire</div><div class="cc-fv">Aïssatou Sow</div></div><div><div class="cc-fl">Loyer/mois</div><div class="cc-fv">175 000 F</div></div><div><div class="cc-fl">Début</div><div class="cc-fv">1 juil. 2024</div></div><div><div class="cc-fl">Fin</div><div class="cc-fv">30 juin 2026</div></div></div>
+      <div class="cc-acts"><button class="cc-out" onclick="toast('📄 Ouverture du contrat PDF...')">📄 Voir PDF</button><button class="cc-fil" style="background:linear-gradient(135deg,#C07800,#A06000)" onclick="openRenewSheet('Aïssatou Sow','Appt. 1A')">🔄 Renouveler</button></div>
+    </div>
+    <div style="height:14px"></div>
+  </div>
+  <div class="tabbar">
+    <button class="tbt" onclick="navL(0,'dl')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M11 3L2 10v10h5v-5h8v5h5V10L11 3z"/></svg></div><span class="tbt-l">Accueil</span></button>
+    <button class="tbt" onclick="navL(1,'payments-l')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><rect x="2" y="5" width="18" height="14" rx="2"/><path d="M2 10h18M6 14h4"/></svg></div><span class="tbt-l">Paiements</span></button>
+    <button class="tbt on" onclick="navL(2,'contracts')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V8l-4-6z"/><path d="M14 2v6h6"/></svg></div><span class="tbt-l">Contrats</span></button>
+    <button class="tbt" onclick="navL(3,'messages')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M20 2H2v14l4-4h14V2z"/></svg></div><span class="tbt-l">Messages</span></button>
+    <button class="tbt" onclick="navL(4,'profile')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><circle cx="11" cy="7" r="4"/><path d="M3 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div><span class="tbt-l">Profil</span></button>
+  </div>
+</div>
+
+<!-- =====================================================
+  MESSAGES
+===================================================== -->
+<div class="screen hidden" id="messages">
+  <div class="sb lt"><span class="t">9:41</span><span class="i">▲▲▲ 🔋</span></div>
+  <div class="ph"><div class="ph-r"><button class="bk" onclick="back()"><svg viewBox="0 0 18 18"><path d="M11 4L6 9l5 5"/></svg></button><div class="ph-tl">Messages</div><button class="btn bp bsm" style="margin-left:auto" onclick="toast('✍️ Nouveau message')">+ Nouveau</button></div></div>
+  <div class="scroll">
+    <div class="mi" onclick="S('chat')">
+      <div class="av av48 avt">FD</div>
+      <div class="mi-b"><div class="mi-top"><div class="mi-n">Fatou Diallo</div><div class="mi-t">il y a 2h</div></div><div class="mi-p">Bonjour M. Mbaye, j'ai effectué le paiement du loyer de mai...</div><div style="margin-top:4px"><span class="bdg bok" style="font-size:10px">Appt. 3B</span></div></div>
+      <div class="mi-u">2</div>
+    </div>
+    <div class="mi" onclick="S('chat')">
+      <div class="av av48 avs">MN</div>
+      <div class="mi-b"><div class="mi-top"><div class="mi-n">Moussa Ndiaye</div><div class="mi-t">Hier</div></div><div class="mi-p">Ok je vais payer avant le 30, ne vous inquiétez pas</div><div style="margin-top:4px"><span class="bdg bw" style="font-size:10px">Villa 2</span></div></div>
+    </div>
+    <div class="mi" onclick="S('chat')">
+      <div class="av av48 avo">AS</div>
+      <div class="mi-b"><div class="mi-top"><div class="mi-n">Aïssatou Sow</div><div class="mi-t">20 avr.</div></div><div class="mi-p">Bonjour, je rencontre des difficultés ce mois-ci...</div><div style="margin-top:4px"><span class="bdg bd" style="font-size:10px">Appt. 1A · En retard</span></div></div>
+      <div class="mi-u">1</div>
+    </div>
+    <div class="mi" onclick="toast('📊 Rapport ouvert')">
+      <div style="width:48px;height:48px;border-radius:50%;background:var(--softer);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border)"><span style="font-size:20px">📊</span></div>
+      <div class="mi-b"><div class="mi-top"><div class="mi-n">PayTonLoyer</div><div class="mi-t">23 avr.</div></div><div class="mi-p">Votre rapport mensuel d'avril est prêt à consulter</div></div>
+    </div>
+  </div>
+  <div class="tabbar">
+    <button class="tbt" onclick="navL(0,'dl')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M11 3L2 10v10h5v-5h8v5h5V10L11 3z"/></svg></div><span class="tbt-l">Accueil</span></button>
+    <button class="tbt" onclick="navL(1,'payments-l')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><rect x="2" y="5" width="18" height="14" rx="2"/><path d="M2 10h18M6 14h4"/></svg></div><span class="tbt-l">Paiements</span></button>
+    <button class="tbt" onclick="navL(2,'contracts')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V8l-4-6z"/><path d="M14 2v6h6"/></svg></div><span class="tbt-l">Contrats</span></button>
+    <button class="tbt on" onclick="navL(3,'messages')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><path d="M20 2H2v14l4-4h14V2z"/><path d="M7 8h8M7 11h5"/></svg></div><span class="tbt-l">Messages</span></button>
+    <button class="tbt" onclick="navL(4,'profile')"><div class="tbt-pip"><svg viewBox="0 0 22 22"><circle cx="11" cy="7" r="4"/><path d="M3 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div><span class="tbt-l">Profil</span></button>
+  </div>
+</div>
+
+<!-- =====================================================
+  CHAT
+===================================================== -->
+<div class="screen hidden" id="chat">
+  <div class="sb lt"><span class="t">9:41</span><span class="i">▲▲▲ 🔋</span></div>
+  <div style="background:var(--card);padding:9px 16px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0">
+    <button class="bk" onclick="back()"><svg viewBox="0 0 18 18"><path d="M11 4L6 9l5 5"/></svg></button>
+    <div class="av av36 avt" style="flex-shrink:0">FD</div>
+    <div style="flex:1"><div style="font-size:15px;font-weight:700;color:var(--ink)">Fatou Diallo</div><div style="font-size:12px;color:var(--ok);font-weight:500">● En ligne</div></div>
+    <button class="bic" onclick="toast('📞 Appel en cours...')"><svg viewBox="0 0 20 20"><path d="M3 4c0-1 1-2 2-2l3 1 1 4-2 1c1 3 4 5 5 5l1-2 4 1 1 3c0 1-1 2-2 2C6 17 3 6 3 4z"/></svg></button>
+  </div>
+  <div class="chat-area" id="chat-msgs">
+    <div class="chat-sep">Aujourd'hui, 09:15</div>
+    <div class="bubble r"><p>Bonjour M. Mbaye, j'espère que vous allez bien.</p><div class="bt">09:15</div></div>
+    <div class="bubble r"><p>Je voulais vous informer que j'ai effectué le paiement du loyer de mai via Orange Money 🏠</p><div class="bt">09:16</div></div>
+    <div class="bubble s"><p>Bonjour Fatou ! Merci, j'ai bien reçu la notification. Votre reçu a été envoyé par email. 👍</p><div class="bt">09:32</div></div>
+    <div class="bubble r"><p>Merci ! Au fait, le robinet de la cuisine goutte depuis hier. Pouvez-vous envoyer un plombier ?</p><div class="bt">09:41</div></div>
+  </div>
+  <div class="cib">
+    <textarea class="ci" id="ci" placeholder="Écrire un message..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"></textarea>
+    <button class="cs" onclick="sendMsg()"><svg viewBox="0 0 17 17"><path d="M2 8.5L14 2l-5 12V9.5L2 8.5z"/></svg></button>
+  </div>
+</div>
+
+<!-- =====================================================
+  ANALYTICS
+===================================================== -->
+<div class="screen hidden" id="analytics">
+  <div class="sb lt"><span class="t">9:41</span><span class="i">▲▲▲ 🔋</span></div>
+  <div class="ph"><div class="ph-r"><button class="bk" onclick="back()"><svg viewBox="0 0 18 18"><path d="M11 4L6 9l5 5"/></svg></button><div><div class="ph-tl">Analyses</div><div class="ph-st">Aperçu financier 2026</div></div></div></div>
+  <div class="scroll" style="padding:14px 18px">
+    <div class="ag">
+      <div class="ag-c"><div class="ag-l">REVENUS ANNUELS</div><div class="ag-v">2.4M</div><div class="ag-s" style="color:var(--ok)">↑ +12% vs 2025</div></div>
+      <div class="ag-c"><div class="ag-l">TAUX OCCUPATION</div><div class="ag-v">75%</div><div class="ag-s" style="color:var(--warn)">3/4 unités</div></div>
+      <div class="ag-c"><div class="ag-l">PONCTUALITÉ</div><div class="ag-v">88%</div><div class="ag-s" style="color:var(--ok)">↑ +5%</div></div>
+      <div class="ag-c"><div class="ag-l">IMPAYÉS</div><div class="ag-v" style="color:var(--err)">375k</div><div class="ag-s" style="color:var(--muted)">F CFA à percevoir</div></div>
+    </div>
+    <div class="sh2"><div class="sh2-t">Revenus par mois (2026)</div></div>
+    <div class="card" style="margin-bottom:14px"><div class="cw" id="ac"></div><div style="display:flex;justify-content:space-between;margin-top:4px" id="ac-l"></div></div>
+    <div class="sh2"><div class="sh2-t">Revenus par propriété</div></div>
+    <div class="card" style="margin-bottom:20px" id="pb"></div>
+  </div>
+</div>
+
+<!-- =====================================================
+  NOTIFICATIONS
+===================================================== -->
+<div class="screen hidden" id="notifs">
+  <div class="sb lt"><span class="t">9:41</span><span class="i">▲▲▲ 🔋</span></div>
+  <div class="ph"><div class="ph-r"><button class="bk" onclick="back()"><svg viewBox="0 0 18 18"><path d="M11 4L6 9l5 5"/></svg></button><div class="ph-tl">Notifications</div><button class="btn bg bsm" style="margin-left:auto" onclick="markAllRead()">Tout lire</button></div></div>
+  <div class="scroll" id="notif-list">
+    <div class="slbl">Aujourd'hui</div>
+    <div class="nit" onclick="toast('✅ Notification lue')"><div class="n-dot" id="nd1"></div><div><div class="n-txt"><strong>Paiement reçu</strong> — Fatou Diallo a payé 150 000 F CFA pour l'Appt. 3B</div><div class="n-tm">Il y a 2 heures</div></div></div>
+    <div class="nit" onclick="toast('✅ Notification lue')"><div class="n-dot" id="nd2"></div><div><div class="n-txt"><strong>Nouveau message</strong> — Fatou Diallo vous a écrit concernant une réparation</div><div class="n-tm">Il y a 2h 15min</div></div></div>
+    <div class="slbl">Hier</div>
+    <div class="nit" onclick="toast('✅ Notification lue')"><div class="n-dot rd" id="nd3"></div><div><div class="n-txt" style="color:var(--muted)"><strong>Rappel paiement</strong> — Le loyer de Moussa Ndiaye est dû dans 7 jours (200 000 F)</div><div class="n-tm">Hier, 10:00</div></div></div>
+    <div class="nit" onclick="toast('✅ Notification lue')"><div class="n-dot rd" id="nd4"></div><div><div class="n-txt" style="color:var(--muted)"><strong>Retard détecté</strong> — Aïssatou Sow a 4 jours de retard pour l'Appt. 1A</div><div class="n-tm">Hier, 09:00</div></div></div>
+    <div class="slbl">22 Avril 2026</div>
+    <div class="nit" onclick="toast('✅ Notification lue')"><div class="n-dot rd"></div><div><div class="n-txt" style="color:var(--muted)"><strong>Contrat expirant</strong> — Bail d'Aïssatou Sow (Appt. 1A) expire dans 2 mois</div><div class="n-tm">22 avr., 08:30</div></div></div>
+    <div class="nit" onclick="toast('✅ Notification lue')"><div class="n-dot rd"></div><div><div class="n-txt" style="color:var(--muted)"><strong>Rapport mensuel</strong> — Votre rapport d'avril 2026 est prêt</div><div class="n-tm">22 avr., 07:00</div></div></div>
+  </div>
+</div>
+
+<!-- =====================================================
+  PROFILE
+===================================================== -->
+<div class="screen hidden" id="profile">
+  <div class="sb dk" style="background:linear-gradient(160deg,#0C0A07,#1E160E)"><span class="t" style="color:white">9:41</span><span class="i" style="color:rgba(255,255,255,.6)">▲▲▲ 🔋</span></div>
+  <div class="prof-h">
+    <div class="ph-b1"></div><div class="ph-b2"></div>
+    <div style="display:flex;justify-content:flex-start;margin-bottom:16px;position:relative;z-index:1">
+      <button class="bk" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.1)" onclick="back()"><svg viewBox="0 0 18 18" style="stroke:white!important"><path d="M11 4L6 9l5 5"/></svg></button>
+    </div>
+    <div style="position:relative;z-index:1;text-align:center">
+      <div class="av av80 avt" id="p-av" style="margin:0 auto 12px;background:linear-gradient(135deg,#E06050,#B84030)">AM</div>
+      <div style="font-size:20px;font-weight:800;color:white;letter-spacing:-.5px" id="p-nm">Amadou Mbaye</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.44);margin-top:3px" id="p-rl">Propriétaire · Dakar, Sénégal</div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+        <span id="p-b1" class="bdg" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.12)">4 propriétés</span>
+        <span id="p-b2" class="bdg" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.12)">3 locataires</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll" style="padding:12px 0">
+    <div style="background:var(--card);border-radius:var(--rl);margin:0 18px 12px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--sh)">
+      <div class="sr" onclick="openEditProfile()"><div class="sr-ic" style="background:var(--terra-l)"><svg style="stroke:var(--terra-d)" viewBox="0 0 17 17"><circle cx="8.5" cy="5.5" r="4"/><path d="M2 16c0-4 3-6.5 6.5-6.5S15 12 15 16"/></svg></div><div><div class="sr-l">Informations personnelles</div><div class="sr-s">Nom, téléphone, email</div></div><div class="sr-ch"><svg viewBox="0 0 15 15"><path d="M5 4l4 3.5L5 11"/></svg></div></div>
+      <div class="sr" onclick="toast('🔒 Changer le mot de passe')"><div class="sr-ic" style="background:var(--sap-l)"><svg style="stroke:var(--sap)" viewBox="0 0 17 17"><path d="M8.5 2L3 5v5c0 4 2.5 5.5 5.5 6.5 3-1 5.5-2.5 5.5-6.5V5L8.5 2z"/></svg></div><div><div class="sr-l">Sécurité & Mot de passe</div><div class="sr-s">2FA, changement de mot de passe</div></div><div class="sr-ch"><svg viewBox="0 0 15 15"><path d="M5 4l4 3.5L5 11"/></svg></div></div>
+    </div>
+    <div style="background:var(--card);border-radius:var(--rl);margin:0 18px 12px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--sh)">
+      <div class="sr" onclick="openNotifPrefs()"><div class="sr-ic" style="background:var(--warn-l)"><svg style="stroke:var(--warn)" viewBox="0 0 17 17"><path d="M8.5 2a5 5 0 00-5 5v3l-1.5 2v.5h13V12l-1.5-2V7a5 5 0 00-5-5z"/><path d="M6.5 15a2 2 0 004 0"/></svg></div><div><div class="sr-l">Notifications</div><div class="sr-s">Rappels de paiement, alertes</div></div><div class="sr-ch"><svg viewBox="0 0 15 15"><path d="M5 4l4 3.5L5 11"/></svg></div></div>
+      <div class="sr" onclick="openLangSheet()"><div class="sr-ic" style="background:var(--olive-l)"><svg style="stroke:var(--olive)" viewBox="0 0 17 17"><circle cx="8.5" cy="8.5" r="6.5"/><path d="M8.5 2c-2 2.5-2 9.5 0 13M2 8.5h13M3 5h11M3 12h11"/></svg></div><div><div class="sr-l">Langue</div><div class="sr-s">Français</div></div><div class="sr-ch"><svg viewBox="0 0 15 15"><path d="M5 4l4 3.5L5 11"/></svg></div></div>
+    </div>
+    <div style="background:var(--card);border-radius:var(--rl);margin:0 18px 12px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--sh)">
+      <div class="sr" onclick="toast('❓ Aide & Support — Ouverture...')"><div class="sr-ic" style="background:var(--softer)"><svg style="stroke:var(--muted)" viewBox="0 0 17 17"><circle cx="8.5" cy="8.5" r="6.5"/><path d="M6.5 7c0-1 .9-2 2-2s2 1 2 2-2 2-2 3"/><circle cx="8.5" cy="13" r=".7" fill="var(--muted)"/></svg></div><div class="sr-l">Aide & Support</div><div class="sr-ch"><svg viewBox="0 0 15 15"><path d="M5 4l4 3.5L5 11"/></svg></div></div>
+    </div>
+    <div style="padding:4px 18px 32px">
+      <button class="btn bs" style="color:var(--err);border-color:rgba(184,32,32,.2)" onclick="doLogout()">
+        <svg style="width:17px;height:17px;fill:none;stroke:var(--err);stroke-width:2" viewBox="0 0 17 17"><path d="M11 12l4-4-4-4M6 8.5h9M6 3H3v11h3"/></svg>
+        Se déconnecter
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+  MODALS / SHEETS
+===================================================== -->
+<!-- SHEET: Ajouter propriété -->
+<div class="ov" id="ov-addprop">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div style="font-size:19px;font-weight:800;color:var(--ink);margin-bottom:5px">Ajouter une propriété</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:20px">Renseignez les informations du bien</div>
+    <div class="fg"><div class="fl">Nom du bien</div><input class="fi" type="text" placeholder="Ex : Appartement 4B, Villa N°3..."></div>
+    <div class="fg"><div class="fl">Adresse complète</div><input class="fi" type="text" placeholder="Ex : Dakar Plateau, Sénégal"></div>
+    <div class="fg"><div class="fl">Loyer mensuel (F CFA)</div><input class="fi" type="number" placeholder="Ex : 150000"></div>
+    <button class="btn bp" style="margin-bottom:10px" onclick="closeSheet('ov-addprop');toast('✅ Propriété ajoutée avec succès !')">Ajouter la propriété</button>
+    <button class="btn bg" onclick="closeSheet('ov-addprop')">Annuler</button>
+  </div>
+</div>
+
+<!-- SHEET: Ajouter locataire -->
+<div class="ov" id="ov-addtenant">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div style="font-size:19px;font-weight:800;color:var(--ink);margin-bottom:5px">Ajouter un locataire</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:20px">Informations du nouveau locataire</div>
+    <div class="fg"><div class="fl">Nom complet</div><input class="fi" type="text" placeholder="Ex : Oumar Sall"></div>
+    <div class="fg"><div class="fl">Téléphone</div><input class="fi" type="tel" placeholder="+221 77 000 00 00"></div>
+    <div class="fg"><div class="fl">Email</div><input class="fi" type="email" placeholder="locataire@email.com"></div>
+    <div class="fg"><div class="fl">Date de début du bail</div><input class="fi" type="date"></div>
+    <button class="btn bp" style="margin-bottom:10px" onclick="closeSheet('ov-addtenant');toast('✅ Locataire ajouté avec succès !')">Confirmer</button>
+    <button class="btn bg" onclick="closeSheet('ov-addtenant')">Annuler</button>
+  </div>
+</div>
+
+<!-- SHEET: Signature contrat -->
+<div class="ov" id="ov-sign">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div style="font-size:19px;font-weight:800;color:var(--ink);margin-bottom:5px" id="sign-title">Signer le contrat</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:20px" id="sign-sub">Fatou Diallo — Appt. 3B</div>
+    <div style="background:var(--softer);border-radius:14px;padding:16px;margin-bottom:16px;border:1px solid var(--border)">
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span style="font-size:22px">📋</span>
+        <div><div style="font-size:14px;font-weight:700;color:var(--ink)">Contrat de bail résidentiel</div><div style="font-size:13px;color:var(--muted);margin-top:3px;line-height:1.5">En apposant votre signature électronique, vous acceptez les termes et conditions du contrat de bail tel qu'établi.</div></div>
+      </div>
+    </div>
+    <div class="fg"><div class="fl">Signature électronique (votre nom)</div><input class="fi" type="text" id="sig-input" placeholder="Tapez votre nom complet pour signer"></div>
+    <button class="btn bp" style="margin-bottom:10px" onclick="doSign()">✍️ Apposer ma signature</button>
+    <button class="btn bg" onclick="closeSheet('ov-sign')">Annuler</button>
+  </div>
+</div>
+
+<!-- SHEET: Renouvellement contrat -->
+<div class="ov" id="ov-renew">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div style="font-size:19px;font-weight:800;color:var(--ink);margin-bottom:5px">Renouveler le bail</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:20px" id="renew-sub">Aïssatou Sow — Appt. 1A</div>
+    <div class="fg"><div class="fl">Nouvelle durée</div>
+      <select class="fi" style="cursor:pointer"><option>12 mois</option><option>24 mois</option><option>6 mois</option></select>
+    </div>
+    <div class="fg"><div class="fl">Nouveau loyer mensuel (F CFA)</div><input class="fi" type="number" value="175000"></div>
+    <div class="fg"><div class="fl">Date de début</div><input class="fi" type="date"></div>
+    <button class="btn bp" style="margin-bottom:10px" onclick="closeSheet('ov-renew');toast('🔄 Bail renouvelé avec succès !')">Confirmer le renouvellement</button>
+    <button class="btn bg" onclick="closeSheet('ov-renew')">Annuler</button>
+  </div>
+</div>
+
+<!-- SHEET: Profil locataire rapide -->
+<div class="ov" id="ov-tenant">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+      <div class="av av64 avs" id="ot-av">MN</div>
+      <div>
+        <div style="font-size:18px;font-weight:800;color:var(--ink)" id="ot-nm">Moussa Ndiaye</div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px" id="ot-prop">Villa 2 · Almadies</div>
+        <div style="margin-top:6px"><span class="bdg bw" id="ot-bdg">En attente</span></div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:16px;padding:0;overflow:hidden">
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--muted)">Loyer mensuel</span><span style="font-size:13px;font-weight:700" id="ot-rent">200 000 F</span></div>
+      <div style="padding:12px 14px;display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--muted)">Statut paiement</span><span style="font-size:13px;font-weight:700" id="ot-status">En attente</span></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:12px">
+      <button class="btn bp" style="flex:1" onclick="closeSheet('ov-tenant');S('chat')">💬 Envoyer message</button>
+      <button class="btn bs" style="flex:1" onclick="closeSheet('ov-tenant');S('tenant-d')">👤 Voir profil</button>
+    </div>
+    <button class="btn bg" onclick="closeSheet('ov-tenant')">Fermer</button>
+  </div>
+</div>
+
+<!-- SHEET: Modifier profil -->
+<div class="ov" id="ov-edit">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div style="font-size:19px;font-weight:800;color:var(--ink);margin-bottom:20px">Modifier le profil</div>
+    <div class="fg"><div class="fl">Nom complet</div><input class="fi" type="text" id="ep-name" placeholder="Votre nom"></div>
+    <div class="fg"><div class="fl">Téléphone</div><input class="fi" type="tel" id="ep-tel" placeholder="+221 77 000 00 00"></div>
+    <div class="fg"><div class="fl">Email</div><input class="fi" type="email" id="ep-email" placeholder="email@example.com"></div>
+    <div class="fg"><div class="fl">Ville / Pays</div><input class="fi" type="text" placeholder="Dakar, Sénégal"></div>
+    <button class="btn bp" style="margin-bottom:10px" onclick="saveProfile()">Enregistrer les modifications</button>
+    <button class="btn bg" onclick="closeSheet('ov-edit')">Annuler</button>
+  </div>
+</div>
+
+<!-- SHEET: Préférences notifications -->
+<div class="ov" id="ov-notif">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div style="font-size:19px;font-weight:800;color:var(--ink);margin-bottom:5px">Notifications</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:20px">Gérez vos préférences de notification</div>
+    <div id="notif-prefs">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:14px;font-weight:600;color:var(--ink)">Rappels de paiement</div><div style="font-size:12px;color:var(--muted)">3 jours avant l'échéance</div></div><div class="toggle on" onclick="toggleNotif(this)" style="width:44px;height:24px;border-radius:12px;background:var(--terra);cursor:pointer;position:relative;transition:background .2s"><div style="width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:2px;right:2px;transition:right .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)"></div></div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:14px;font-weight:600;color:var(--ink)">Paiements reçus</div><div style="font-size:12px;color:var(--muted)">Confirmer chaque paiement</div></div><div class="toggle on" onclick="toggleNotif(this)" style="width:44px;height:24px;border-radius:12px;background:var(--terra);cursor:pointer;position:relative;transition:background .2s"><div style="width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:2px;right:2px;transition:right .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)"></div></div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)"><div><div style="font-size:14px;font-weight:600;color:var(--ink)">Retards de paiement</div><div style="font-size:12px;color:var(--muted)">Alerte si retard détecté</div></div><div class="toggle on" onclick="toggleNotif(this)" style="width:44px;height:24px;border-radius:12px;background:var(--terra);cursor:pointer;position:relative;transition:background .2s"><div style="width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:2px;right:2px;transition:right .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)"></div></div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0"><div><div style="font-size:14px;font-weight:600;color:var(--ink)">Messages</div><div style="font-size:12px;color:var(--muted)">Nouveaux messages reçus</div></div><div class="toggle" onclick="toggleNotif(this)" style="width:44px;height:24px;border-radius:12px;background:var(--softer);border:1px solid var(--border);cursor:pointer;position:relative;transition:background .2s"><div style="width:20px;height:20px;border-radius:50%;background:white;position:absolute;top:2px;left:2px;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)"></div></div></div>
+    </div>
+    <button class="btn bp" style="margin-top:16px;margin-bottom:10px" onclick="closeSheet('ov-notif');toast('✅ Préférences sauvegardées')">Enregistrer</button>
+    <button class="btn bg" onclick="closeSheet('ov-notif')">Fermer</button>
+  </div>
+</div>
+
+<!-- SHEET: Langue -->
+<div class="ov" id="ov-lang">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div style="font-size:19px;font-weight:800;color:var(--ink);margin-bottom:20px">Choisir la langue</div>
+    <div id="lang-opts">
+      <div style="display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="selectLang('Français','🇫🇷')"><span style="font-size:22px">🇫🇷</span><span style="font-size:15px;font-weight:600;color:var(--ink);flex:1">Français</span><svg style="width:18px;height:18px;fill:none;stroke:var(--terra);stroke-width:2.5" viewBox="0 0 18 18"><path d="M4 9l4 4 6-7"/></svg></div>
+      <div style="display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="selectLang('English','🇬🇧')"><span style="font-size:22px">🇬🇧</span><span style="font-size:15px;font-weight:600;color:var(--ink);flex:1">English</span></div>
+      <div style="display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="selectLang('Wolof','🇸🇳')"><span style="font-size:22px">🇸🇳</span><span style="font-size:15px;font-weight:600;color:var(--ink);flex:1">Wolof</span><span class="bdg bn" style="font-size:10px">Bientôt</span></div>
+      <div style="display:flex;align-items:center;gap:13px;padding:14px 0;cursor:pointer" onclick="selectLang('Bambara','🇲🇱')"><span style="font-size:22px">🇲🇱</span><span style="font-size:15px;font-weight:600;color:var(--ink);flex:1">Bambara</span><span class="bdg bn" style="font-size:10px">Bientôt</span></div>
+    </div>
+    <button class="btn bg" style="margin-top:16px" onclick="closeSheet('ov-lang')">Fermer</button>
+  </div>
+</div>
+
+</div><!-- /#app -->
+
+<script src="js/state.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/payment.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/modals.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/splash.js"></script>
+<script src="js/init.js"></script>
+</body>
+</html>

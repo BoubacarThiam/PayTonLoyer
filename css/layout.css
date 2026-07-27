@@ -1,0 +1,33 @@
+/* ── PHONE FRAME ── */
+#app{
+  width:390px;height:844px;background:var(--soft);border-radius:48px;
+  overflow:hidden;position:relative;
+  box-shadow:0 0 0 1px rgba(255,255,255,.09),0 0 0 8px rgba(0,0,0,.38),0 0 0 9px rgba(255,255,255,.04),0 40px 80px rgba(0,0,0,.56),0 80px 160px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.12);
+}
+#app::before{content:'';position:absolute;left:-10px;top:176px;width:4px;height:56px;border-radius:2px 0 0 2px;background:rgba(255,255,255,.07);pointer-events:none;z-index:999}
+#app::after{content:'';position:absolute;right:-10px;top:196px;width:4px;height:78px;border-radius:0 2px 2px 0;background:rgba(255,255,255,.07);pointer-events:none;z-index:999}
+
+/* ── SCREENS ── */
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;background:var(--soft)}
+.screen.hidden{display:none!important}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{display:none}
+
+/* ── STATUS BAR ── */
+.sb{height:48px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 9px;flex-shrink:0}
+.sb.dk{background:transparent}.sb.lt{background:var(--card);border-bottom:1px solid var(--border)}
+.sb .t{font-size:15px;font-weight:700;letter-spacing:-.3px}
+.sb.dk .t{color:white}.sb.lt .t{color:var(--ink)}
+.sb .i{font-size:12px;font-weight:600}
+.sb.dk .i{color:rgba(255,255,255,.65)}.sb.lt .i{color:var(--muted)}
+
+/* ── TAB BAR ── */
+.tabbar{height:82px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:flex-start;padding-top:9px;flex-shrink:0}
+.tbt{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;font-family:var(--font);padding:4px 0;transition:all .18s}
+.tbt svg{width:22px;height:22px;fill:none;stroke:var(--hint);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
+.tbt.on svg{stroke:var(--terra)}
+.tbt-l{font-size:10px;font-weight:600;color:var(--hint);transition:color .2s}
+.tbt.on .tbt-l{color:var(--terra)}
+.tbt-pip{width:26px;height:26px;border-radius:9px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.tbt.on .tbt-pip{background:var(--terra-l)}
+

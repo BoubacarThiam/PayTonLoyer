@@ -1,0 +1,19 @@
+node_modules/
+dist/
+dev-dist/
+.env
+*.db
+*.db-journal
+server/uploads/*
+!server/uploads/.gitkeep
+server/storage/quittances/*
+!server/storage/quittances/.gitkeep
+coverage/
+motion/apercu/
+motion/images/
+*.log
+.DS_Store
+
+# Outils de l'assistant de code (hors application)
+.agents/
+.claude/

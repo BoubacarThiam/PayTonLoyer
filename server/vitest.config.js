@@ -1,0 +1,25 @@
+import os from 'node:os';
+import path from 'node:path';
+import { defineConfig } from 'vitest/config';
+
+const dossierTemp = path.join(os.tmpdir(), 'paytonloyer-tests');
+
+export default defineConfig({
+  test: {
+    include: ['tests/**/*.test.js'],
+    globalSetup: 'tests/preparation.js',
+    // Une seule base SQLite partagée : les fichiers de test s'exécutent l'un après l'autre.
+    fileParallelism: false,
+    testTimeout: 20000,
+    env: {
+      NODE_ENV: 'test',
+      DATABASE_URL: 'file:./test.db',
+      JWT_SECRET: 'secret-de-test-suffisamment-long-pour-les-tests',
+      PAIEMENT_FOURNISSEUR: 'simulateur',
+      CLIENT_URL: 'http://client.test',
+      API_URL: 'http://api.test',
+      DOSSIER_QUITTANCES: path.join(dossierTemp, 'quittances'),
+      DOSSIER_UPLOADS: path.join(dossierTemp, 'uploads'),
+    },
+  },
+});

@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>PayTonLoyer — Showreel 15 s</title>
+<style>
+@font-face { font-family: 'Jakarta'; src: url('../client/node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2') format('woff2'); font-weight: 200 900; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: #021a14; }
+#ecran { position: relative; width: 1920px; height: 1080px; overflow: hidden; font-family: 'Jakarta', sans-serif; color: #fff; background: #021a14; perspective: 1800px; }
+.couche { position: absolute; inset: 0; }
+.centre { display: flex; align-items: center; justify-content: center; }
+.scene { visibility: hidden; }
+
+/* Fond commun */
+.grille { background-size: 80px 80px; background-image: linear-gradient(to right, rgb(255 255 255 / .05) 1px, transparent 1px), linear-gradient(to bottom, rgb(255 255 255 / .05) 1px, transparent 1px); mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%); }
+.aurore { position: absolute; border-radius: 50%; filter: blur(120px); }
+#aurore-a { width: 1100px; height: 800px; left: 200px; top: 80px; background: rgb(16 185 129 / .38); }
+#aurore-b { width: 900px; height: 700px; left: 900px; top: 300px; background: rgb(29 58 138 / .45); }
+#grain { opacity: .07; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); z-index: 90; pointer-events: none; }
+#vignette { background: radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / .55) 100%); z-index: 89; }
+
+/* Scène 1 : ouverture */
+#ligne { position: absolute; left: 360px; top: 539px; width: 1200px; height: 2px; background: linear-gradient(90deg, transparent, #6ee7b7, #fff, #6ee7b7, transparent); transform: scaleX(0); }
+#emblème { position: relative; width: 760px; }
+#emblème img, .reflet { display: block; width: 100%; }
+.reflet { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / .95) 50%, transparent 65%) no-repeat; background-size: 300% 100%; background-position: 150% 0; -webkit-mask: var(--masque) center / 100% 100% no-repeat; mask: var(--masque) center / 100% 100% no-repeat; }
+#onde { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #6ee7b7; position: absolute; left: 940px; top: 520px; opacity: 0; }
+#rideau { background: #047857; clip-path: circle(0% at 50% 50%); }
+
+/* Scène 2 : typographie cinétique */
+.ligne-texte { overflow: hidden; line-height: .92; padding: 0 0 18px; }
+.mot { display: inline-block; font-weight: 900; font-size: 228px; letter-spacing: -.055em; text-transform: uppercase; }
+.mot + .mot { margin-left: .2em; }
+/* Pas de text-stroke : avec une police variable, il révèle les tracés internes des lettres. */
+.contour { color: #6ee7b7; }
+#compteur-bloc { text-align: center; }
+#compteur { font-weight: 900; font-size: 300px; letter-spacing: -.06em; line-height: .9; font-variant-numeric: tabular-nums; }
+#compteur-unite { font-size: 90px; font-weight: 800; color: #6ee7b7; margin-left: 24px; letter-spacing: -.02em; }
+#compteur-legende { font-size: 40px; font-weight: 600; color: rgb(255 255 255 / .8); margin-top: 22px; letter-spacing: .02em; }
+#barre { width: 1100px; height: 18px; border-radius: 99px; background: rgb(255 255 255 / .18); margin: 40px auto 0; overflow: hidden; }
+#barre i { display: block; height: 100%; width: 100%; border-radius: 99px; background: linear-gradient(90deg, #6ee7b7, #fff); transform-origin: left; transform: scaleX(0); }
+
+/* Scène 3 : produit */
+#titre-produit { position: absolute; left: 150px; top: 330px; }
+#titre-produit p { font-size: 118px; font-weight: 900; letter-spacing: -.05em; line-height: 1; }
+#titre-produit p + p { color: #6ee7b7; }
+#telephone { position: absolute; left: 1120px; top: 95px; width: 430px; height: 890px; border-radius: 64px; background: #050b09; padding: 14px; box-shadow: 0 60px 120px -30px rgb(0 0 0 / .8), 0 0 0 2px rgb(255 255 255 / .12); transform-style: preserve-3d; }
+#tel-ecran { width: 100%; height: 100%; border-radius: 52px; overflow: hidden; background: #f3f6f4; color: #10231b; position: relative; }
+#tel-haut { background: linear-gradient(160deg, #022c22, #064e3b 45%, #047857); color: #fff; padding: 46px 30px 110px; border-radius: 0 0 40px 40px; }
+#tel-haut small { font-size: 22px; color: #d1fae5; }
+#tel-montant { font-size: 50px; white-space: nowrap; font-weight: 900; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+#tel-barre { height: 12px; border-radius: 99px; background: rgb(255 255 255 / .2); margin-top: 16px; overflow: hidden; }
+#tel-barre i { display: block; height: 100%; background: #6ee7b7; border-radius: 99px; transform-origin: left; transform: scaleX(0); }
+.tuiles { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: -78px 20px 0; position: relative; }
+.tuile { background: #fff; border-radius: 26px; padding: 22px; box-shadow: 0 14px 30px -10px rgb(6 78 59 / .25); }
+.tuile small { color: #56665e; font-size: 19px; display: block; }
+.tuile b { font-size: 25px; white-space: nowrap; font-weight: 900; letter-spacing: -.03em; }
+.rangee { display: flex; align-items: center; gap: 16px; background: #fff; margin: 16px 20px 0; border-radius: 24px; padding: 18px; box-shadow: 0 14px 30px -12px rgb(6 78 59 / .25); }
+.avatar { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; flex-shrink: 0; }
+.rangee b { display: block; font-size: 22px; }
+.rangee small { color: #56665e; font-size: 18px; }
+.rond-vert { margin-left: auto; width: 52px; height: 52px; border-radius: 50%; background: #047857; flex-shrink: 0; }
+.puce { position: absolute; white-space: nowrap; display: flex; align-items: center; gap: 14px; padding: 14px 26px 14px 14px; border-radius: 99px; font-size: 30px; font-weight: 800; background: rgb(255 255 255 / .1); border: 1px solid rgb(255 255 255 / .2); box-shadow: 0 20px 50px -15px rgb(0 0 0 / .6); backdrop-filter: blur(14px); }
+.puce span { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; }
+#notif { position: absolute; left: 980px; top: 820px; display: flex; gap: 18px; align-items: center; background: #fff; color: #10231b; border-radius: 28px; padding: 22px 30px; font-size: 26px; font-weight: 700; box-shadow: 0 30px 60px -20px rgb(0 0 0 / .7); }
+#notif i { width: 52px; height: 52px; border-radius: 16px; background: #25d366; flex-shrink: 0; }
+
+/* Scène 4 : quittance */
+#doc { position: absolute; left: 330px; top: 140px; width: 600px; height: 800px; background: #fff; border-radius: 28px; color: #10231b; overflow: hidden; box-shadow: 0 60px 120px -30px rgb(0 0 0 / .8); transform-origin: 50% 0; }
+#doc-tete { background: #047857; color: #fff; padding: 44px 46px; }
+#doc-tete b { font-size: 46px; font-weight: 900; letter-spacing: -.03em; display: block; }
+#doc-tete small { font-size: 22px; opacity: .85; }
+.trait { height: 18px; border-radius: 9px; background: #e4ebe7; margin: 30px 46px 0; transform-origin: left; }
+#doc-montant { margin: 40px 46px 0; background: #ecfdf5; border-radius: 22px; padding: 26px 30px; font-size: 58px; font-weight: 900; letter-spacing: -.04em; }
+#tampon { position: absolute; left: 560px; top: 560px; border: 10px solid #047857; color: #047857; border-radius: 22px; padding: 6px 34px; font-size: 96px; font-weight: 900; letter-spacing: .04em; }
+#titre-doc { position: absolute; left: 1060px; top: 360px; }
+#titre-doc p { font-size: 120px; font-weight: 900; letter-spacing: -.05em; line-height: 1; }
+#titre-doc p + p { color: #6ee7b7; }
+#coche { position: absolute; left: 1060px; top: 220px; }
+
+/* Scène 5 : bandes */
+.bande { position: absolute; left: -400px; white-space: nowrap; font-size: 190px; font-weight: 900; letter-spacing: -.04em; text-transform: uppercase; }
+#bande-1 { top: 70px; }
+#bande-2 { top: 420px; color: #6ee7b7; }
+#bande-3 { top: 770px; }
+.bande em { font-style: normal; color: rgb(255 255 255 / .2); }
+#blanc { background: #fff; clip-path: circle(0% at 50% 50%); z-index: 50; }
+
+/* Scène 6 : signature */
+#fin { background: #fff; z-index: 60; flex-direction: column; color: #00225f; }
+#logo-fin { position: relative; width: 980px; }
+#logo-fin img { display: block; width: 100%; }
+#accroche { font-size: 50px; font-weight: 800; letter-spacing: -.02em; color: #065f46; margin-top: 18px; }
+#mentions { font-size: 22px; font-weight: 700; letter-spacing: .32em; text-transform: uppercase; color: rgb(0 34 95 / .62); margin-top: 18px; }
+</style>
+</head>
+<body>
+<div id="ecran">
+  <div class="couche" id="fond">
+    <div class="aurore" id="aurore-a"></div>
+    <div class="aurore" id="aurore-b"></div>
+    <div class="couche grille"></div>
+  </div>
+
+  <!-- 1. Ouverture -->
+  <div class="couche scene centre" id="s1">
+    <div id="ligne"></div>
+    <div id="onde"></div>
+    <div id="emblème" style="--masque:url('../client/public/logo/embleme-blanc.png')">
+      <img src="../client/public/logo/embleme-blanc.png" alt="" />
+      <div class="reflet"></div>
+    </div>
+  </div>
+  <div class="couche" id="rideau"></div>
+
+  <!-- 2. Typographie -->
+  <div class="couche scene centre" id="s2a" style="flex-direction:column">
+    <div class="ligne-texte"><span class="mot">Vos</span> <span class="mot">loyers</span></div>
+    <div class="ligne-texte"><span class="mot contour">encaissés.</span></div>
+  </div>
+  <div class="couche scene centre" id="s2b">
+    <div id="compteur-bloc">
+      <div><span id="compteur">0</span><span id="compteur-unite">FCFA</span></div>
+      <div id="compteur-legende">encaissés ce mois, sans courir après personne</div>
+      <div id="barre"><i></i></div>
+    </div>
+  </div>
+
+  <!-- 3. Produit -->
+  <div class="couche scene" id="s3">
+    <div id="titre-produit">
+      <div class="ligne-texte"><p class="mot-prod">Tout votre parc.</p></div>
+      <div class="ligne-texte"><p class="mot-prod">Dans votre poche.</p></div>
+    </div>
+    <div id="telephone">
+      <div id="tel-ecran">
+        <div id="tel-haut">
+          <small>Encaissé ce mois</small>
+          <div id="tel-montant">0 FCFA</div>
+          <div id="tel-barre"><i></i></div>
+        </div>
+        <div class="tuiles">
+          <div class="tuile app"><small>Attendus</small><b>1&nbsp;250&nbsp;000</b></div>
+          <div class="tuile app"><small>Impayés</small><b>400&nbsp;000</b></div>
+        </div>
+        <div class="rangee app"><div class="avatar" style="background:#d1fae5;color:#065f46">MN</div><div><b>Moussa Ndiaye</b><small>Oct. · 120 000 FCFA</small></div><div class="rond-vert"></div></div>
+        <div class="rangee app"><div class="avatar" style="background:#fef3c7;color:#78350f">AS</div><div><b>Aïda Sarr</b><small>Nov. · 95 000 FCFA</small></div><div class="rond-vert"></div></div>
+        <div class="rangee app"><div class="avatar" style="background:#ccfbf1;color:#134e4a">FF</div><div><b>Fatou Fall</b><small>À jour</small></div></div>
+      </div>
+    </div>
+    <div class="puce" id="p-wave" style="left:880px;top:200px"><span style="background:#1dc8ff;color:#06283d">W</span>Wave</div>
+    <div class="puce" id="p-om" style="left:1560px;top:330px"><span style="background:#ff7900;color:#1a1a1a">OM</span>Orange Money</div>
+    <div class="puce" id="p-fm" style="left:1610px;top:640px"><span style="background:#c8102e">FM</span>Free Money</div>
+    <div id="notif"><i></i><div>Rappel envoyé sur WhatsApp<br /><small style="color:#56665e;font-weight:600;font-size:20px">Moussa Ndiaye · loyer d’octobre</small></div></div>
+  </div>
+
+  <!-- 4. Quittance -->
+  <div class="couche scene" id="s4">
+    <div id="doc">
+      <div id="doc-tete"><b>Quittance de loyer</b><small>N° Q-202611-7F3A2C</small></div>
+      <div class="trait" style="width:70%"></div>
+      <div class="trait" style="width:52%"></div>
+      <div id="doc-montant">150 000 FCFA</div>
+      <div class="trait" style="width:80%"></div>
+      <div class="trait" style="width:64%"></div>
+      <div class="trait" style="width:74%"></div>
+    </div>
+    <div id="tampon">PAYÉ</div>
+    <svg id="coche" width="120" height="120" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="#6ee7b7" stroke-width="8" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" id="coche-cercle" transform="rotate(-90 60 60)"/><path d="M36 62 l16 16 l32 -34" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" id="coche-trait"/></svg>
+    <div id="titre-doc">
+      <div class="ligne-texte"><p class="mot-doc">La quittance ?</p></div>
+      <div class="ligne-texte"><p class="mot-doc">Déjà prête.</p></div>
+    </div>
+  </div>
+
+  <!-- 5. Bandes -->
+  <div class="couche scene" id="s5" style="transform:rotate(-7deg) scale(1.15)">
+    <div class="bande" id="bande-1">Échéances <em>automatiques</em> · Wave · <em>Orange Money</em> · Échéances</div>
+    <div class="bande" id="bande-2">Rappels WhatsApp · <em>Quittances PDF</em> · Rappels WhatsApp</div>
+    <div class="bande" id="bande-3"><em>Espèces</em> · Free Money · <em>Tableau de bord</em> · Espèces</div>
+  </div>
+  <div class="couche" id="blanc"></div>
+
+  <!-- 6. Signature -->
+  <div class="couche centre" id="fin" style="visibility:hidden">
+    <div id="logo-fin" style="--masque:url('../client/public/logo/logo-bleu.png')">
+      <img src="../client/public/logo/logo-bleu.png" alt="PayTonLoyer" />
+      <div class="reflet"></div>
+    </div>
+    <div id="accroche">Vos loyers, simplement.</div>
+    <div id="mentions">Gestion locative · Mobile Money · Sénégal</div>
+  </div>
+
+  <div class="couche" id="vignette"></div>
+  <div class="couche" id="grain"></div>
+</div>
+
+<script src="../client/node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const D = 15;
+const tl = gsap.timeline({ paused: true });
+const compteur = { v: 0 }, compteurTel = { v: 0 };
+const nf = (n) => String(Math.round(n / 1000) * 1000).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+// Fond vivant sur toute la durée
+tl.fromTo('#aurore-a', { x: -120, y: -40 }, { x: 160, y: 60, duration: D, ease: 'sine.inOut' }, 0)
+  .fromTo('#aurore-b', { x: 120, y: 40 }, { x: -200, y: -80, duration: D, ease: 'sine.inOut' }, 0)
+  .fromTo('#fond .grille', { scale: 1.15, opacity: 0 }, { scale: 1, opacity: 1, duration: 2.2, ease: 'power2.out' }, 0);
+
+// 1. Ouverture (0 – 2,6 s)
+tl.set('#s1', { autoAlpha: 1 }, 0)
+  .to('#ligne', { scaleX: 1, duration: 0.6, ease: 'expo.inOut' }, 0.15)
+  .to('#ligne', { scaleY: 40, opacity: 0, duration: 0.5, ease: 'expo.in' }, 0.75)
+  .fromTo('#emblème', { clipPath: 'inset(100% 0 0 0)', y: 80, scale: 1.25, filter: 'blur(24px)' }, { clipPath: 'inset(0% 0 0 0)', y: 0, scale: 1, filter: 'blur(0px)', duration: 0.9, ease: 'expo.out' }, 0.8)
+  .fromTo('#onde', { scale: 0, opacity: 1 }, { scale: 60, opacity: 0, duration: 1.3, ease: 'expo.out' }, 0.9)
+  .to('#emblème .reflet', { backgroundPosition: '-50% 0', duration: 0.7, ease: 'power2.inOut' }, 1.45)
+  .to('#emblème', { scale: 0.92, duration: 0.5, ease: 'power2.inOut' }, 1.75)
+  .to('#emblème', { scale: 14, opacity: 0, filter: 'blur(10px)', duration: 0.55, ease: 'expo.in' }, 2.15)
+  .to('#rideau', { clipPath: 'circle(80% at 50% 50%)', duration: 0.55, ease: 'expo.in' }, 2.1)
+  .set('#s1', { autoAlpha: 0 }, 2.65);
+
+// 2a. Mots qui claquent (2,6 – 3,95 s)
+tl.set('#s2a', { autoAlpha: 1 }, 2.6)
+  .to('#rideau', { clipPath: 'circle(0% at 50% 50%)', duration: 0.5, ease: 'expo.out' }, 2.65)
+  .fromTo('#s2a .mot', { yPercent: 120, skewY: 8 }, { yPercent: 0, skewY: 0, duration: 0.6, ease: 'expo.out', stagger: 0.14 }, 2.68)
+  .to('#s2a .contour', { color: '#ffffff', duration: 0.35, ease: 'power2.out' }, 3.35)
+  .to('#s2a', { scale: 1.06, duration: 1.3, ease: 'none' }, 2.65)
+  .to('#s2a .mot', { yPercent: -120, duration: 0.35, ease: 'expo.in', stagger: 0.04 }, 3.62)
+  .set('#s2a', { autoAlpha: 0 }, 3.98);
+
+// 2b. Compteur (3,95 – 5,3 s)
+tl.set('#s2b', { autoAlpha: 1 }, 3.95)
+  .fromTo('#s2b #compteur-bloc', { scale: 0.7, opacity: 0, filter: 'blur(20px)' }, { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 0.55, ease: 'expo.out' }, 3.95)
+  .to(compteur, { v: 850000, duration: 1.0, ease: 'expo.out' }, 4.0)
+  .to('#barre i', { scaleX: 0.68, duration: 0.9, ease: 'expo.out' }, 4.15)
+  .to('#s2b #compteur-bloc', { y: -60, opacity: 0, filter: 'blur(14px)', duration: 0.35, ease: 'power3.in' }, 4.95)
+  .set('#s2b', { autoAlpha: 0 }, 5.3);
+
+// 3. Produit (5,2 – 8,5 s)
+tl.set('#s3', { autoAlpha: 1 }, 5.2)
+  .fromTo('#telephone', { x: 700, rotateY: -55, rotateZ: 12, filter: 'blur(14px)' }, { x: 0, rotateY: -16, rotateZ: 4, filter: 'blur(0px)', duration: 1.0, ease: 'expo.out' }, 5.2)
+  .to('#telephone', { rotateY: -6, rotateZ: 2, y: -16, duration: 2.2, ease: 'sine.inOut' }, 6.2)
+  .fromTo('.mot-prod', { yPercent: 110 }, { yPercent: 0, duration: 0.7, ease: 'expo.out', stagger: 0.15 }, 5.35)
+  .to(compteurTel, { v: 850000, duration: 1.1, ease: 'expo.out' }, 5.6)
+  .to('#tel-barre i', { scaleX: 0.68, duration: 1.0, ease: 'expo.out' }, 5.7)
+  .fromTo('#s3 .app', { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'back.out(1.6)', stagger: 0.09 }, 5.75)
+  .fromTo('.puce', { scale: 0, opacity: 0, rotate: -12 }, { scale: 1, opacity: 1, rotate: 0, duration: 0.6, ease: 'back.out(2)', stagger: 0.12 }, 6.1)
+  .to('#p-wave', { y: -26, duration: 2, ease: 'sine.inOut' }, 6.7)
+  .to('#p-om', { y: 30, duration: 2, ease: 'sine.inOut' }, 6.7)
+  .to('#p-fm', { y: -22, duration: 2, ease: 'sine.inOut' }, 6.7)
+  .fromTo('#notif', { y: 140, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.8)' }, 6.9)
+  .to('#s3', { x: -1100, rotateY: 30, filter: 'blur(16px)', opacity: 0, duration: 0.55, ease: 'expo.in' }, 8.0)
+  .set('#s3', { autoAlpha: 0 }, 8.56);
+
+// 4. Quittance (8,4 – 11,3 s)
+tl.set('#s4', { autoAlpha: 1 }, 8.4)
+  .fromTo('#doc', { rotateX: -80, y: -120, opacity: 0 }, { rotateX: 0, y: 0, opacity: 1, duration: 0.9, ease: 'expo.out' }, 8.45)
+  .fromTo('#doc .trait', { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'expo.out', stagger: 0.06 }, 8.8)
+  .fromTo('#doc-montant', { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'expo.out' }, 8.95)
+  .fromTo('.mot-doc', { yPercent: 110 }, { yPercent: 0, duration: 0.7, ease: 'expo.out', stagger: 0.18 }, 8.7)
+  .fromTo('#tampon', { scale: 3.2, rotate: -32, opacity: 0 }, { scale: 1, rotate: -14, opacity: 1, duration: 0.32, ease: 'power4.in' }, 9.55)
+  .fromTo('#s4', { x: 0, y: 0 }, { x: 14, y: -10, duration: 0.05, repeat: 5, yoyo: true, ease: 'none' }, 9.87)
+  .to('#coche-cercle', { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' }, 9.9)
+  .to('#coche-trait', { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out' }, 10.3)
+  .to('#s4', { scale: 0.85, opacity: 0, filter: 'blur(18px)', duration: 0.45, ease: 'expo.in' }, 10.95)
+  .set('#s4', { autoAlpha: 0 }, 11.42);
+
+// 5. Bandes croisées (11,3 – 13,4 s)
+tl.set('#s5', { autoAlpha: 1 }, 11.3)
+  .fromTo('#bande-1', { x: 300 }, { x: -1500, duration: 2.1, ease: 'power1.inOut' }, 11.3)
+  .fromTo('#bande-2', { x: -1700 }, { x: 0, duration: 2.1, ease: 'power1.inOut' }, 11.3)
+  .fromTo('#bande-3', { x: 200 }, { x: -1400, duration: 2.1, ease: 'power1.inOut' }, 11.3)
+  .fromTo('#s5', { opacity: 0 }, { opacity: 1, duration: 0.25 }, 11.3)
+  .to('#blanc', { clipPath: 'circle(75% at 50% 50%)', duration: 0.6, ease: 'expo.in' }, 12.85)
+  .set('#s5', { autoAlpha: 0 }, 13.5);
+
+// 6. Signature (13,4 – 15 s)
+tl.set('#fin', { autoAlpha: 1 }, 13.42)
+  .to('#vignette', { opacity: 0, duration: 0.3 }, 13.3)
+  .fromTo('#logo-fin', { scale: 1.12, filter: 'blur(16px)', clipPath: 'inset(0 100% 0 0)' }, { scale: 1, filter: 'blur(0px)', clipPath: 'inset(0 0% 0 0)', duration: 0.9, ease: 'expo.out' }, 13.45)
+  .fromTo('#accroche', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'expo.out' }, 13.85)
+  .fromTo('#mentions', { y: 30, opacity: 0, letterSpacing: '.6em' }, { y: 0, opacity: 1, letterSpacing: '.32em', duration: 0.8, ease: 'expo.out' }, 14.0)
+  .to('#logo-fin .reflet', { backgroundPosition: '-50% 0', duration: 0.8, ease: 'power2.inOut' }, 14.15)
+  .to('#fin', { scale: 1.02, duration: 1.6, ease: 'none' }, 13.4)
+  .set({}, {}, D);
+
+// Rendu image par image, déterministe : appelé par le script d'export.
+window.allerA = (t) => {
+  tl.seek(t, false);
+  document.getElementById('compteur').textContent = nf(compteur.v);
+  document.getElementById('tel-montant').textContent = `${nf(compteurTel.v)} FCFA`;
+  const f = Math.round(t * 30);
+  document.getElementById('grain').style.backgroundPosition = `${(f * 73) % 300}px ${(f * 151) % 300}px`;
+};
+window.DUREE = D;
+window.allerA(0);
+
+// Lecture en direct quand on ouvre simplement le fichier dans un navigateur.
+if (!navigator.webdriver) {
+  const debut = performance.now();
+  const boucle = (maintenant) => { window.allerA(((maintenant - debut) / 1000) % D); requestAnimationFrame(boucle); };
+  document.fonts.ready.then(() => requestAnimationFrame(boucle));
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+@import 'tailwindcss';
+
+/* Écrans peu hauts (petits téléphones, paysage) : les effets plein écran passent en mise en page normale. */
+@custom-variant court (@media (max-height: 700px));
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans Variable', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-heading: 'Plus Jakarta Sans Variable', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+
+  --color-marque-50: #ecfdf5;
+  --color-marque-100: #d1fae5;
+  --color-marque-200: #a7f3d0;
+  --color-marque-300: #6ee7b7;
+  --color-marque-600: #059669;
+  --color-marque-700: #047857;
+  --color-marque-800: #065f46;
+  --color-marque-900: #064e3b;
+  --color-marque-950: #022c22;
+
+  --color-fond: #f3f6f4;
+  --color-carte: #ffffff;
+  --color-bordure: #e4ebe7;
+  --color-contour: #87988f;
+  --color-sourdine: #e6ede9;
+  --color-texte: #10231b;
+  --color-secondaire: #56665e;
+
+  --color-succes-fond: #d1fae5;
+  --color-succes-texte: #065f46;
+  --color-attente-fond: #fef3c7;
+  --color-attente-texte: #92400e;
+  --color-retard-fond: #fee2e2;
+  --color-retard-texte: #991b1b;
+
+  --shadow-carte: 0 1px 2px rgb(6 78 59 / 0.05), 0 10px 28px -6px rgb(6 78 59 / 0.1);
+  --shadow-flottant: 0 2px 6px rgb(6 78 59 / 0.08), 0 16px 40px -8px rgb(6 78 59 / 0.28);
+  --shadow-bouton: 0 8px 18px -6px rgb(4 120 87 / 0.55);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  color-scheme: light;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background: var(--color-fond);
+  color: var(--color-texte);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+.font-heading {
+  font-family: var(--font-heading);
+  letter-spacing: -0.015em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-marque-700);
+  outline-offset: 2px;
+}
+
+.hero :focus-visible {
+  outline-color: #ffffff;
+}
+
+/* En-tête dégradé : le contraste du texte blanc reste supérieur à 4,5:1 sur toute la surface. */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #ffffff;
+  background:
+    radial-gradient(110% 80% at 100% 0%, rgb(16 185 129 / 0.28), transparent 62%),
+    linear-gradient(160deg, var(--color-marque-950) 0%, var(--color-marque-900) 42%, var(--color-marque-700) 100%);
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -7rem;
+  right: -6rem;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 50%;
+  border: 2.75rem solid rgb(255 255 255 / 0.045);
+}
+
+dialog::backdrop {
+  background: rgb(2 44 34 / 0.55);
+}
+
+@keyframes monter {
+  from {
+    transform: translateY(2rem);
+    opacity: 0;
+  }
+}
+
+dialog[open] {
+  animation: monter 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pb-nav {
+  padding-bottom: calc(7rem + env(safe-area-inset-bottom));
+}
+
+.safe-bas {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+@keyframes pulsation {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.squelette,
+.squelette-clair {
+  border-radius: 1.5rem;
+  animation: pulsation 1.5s ease-in-out infinite;
+}
+
+.squelette {
+  background: var(--color-sourdine);
+}
+
+.squelette-clair {
+  border-radius: 0.75rem;
+  background: rgb(255 255 255 / 0.16);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

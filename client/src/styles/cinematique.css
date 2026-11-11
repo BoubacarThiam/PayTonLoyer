@@ -1,0 +1,129 @@
+/* Effets « cinématiques » de la page d'accueil, adaptés de motion-footer.
+   Couleurs fixes en rgb() plutôt que color-mix() : compatibles avec les navigateurs Android plus anciens. */
+
+@keyframes cine-respiration {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes cine-defilement {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes cine-battement {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15%,
+  45% {
+    transform: scale(1.2);
+  }
+  30% {
+    transform: scale(1);
+  }
+}
+
+.cine-respire {
+  animation: cine-respiration 8s ease-in-out infinite alternate;
+}
+
+.cine-defile {
+  animation: cine-defilement 40s linear infinite;
+}
+
+.cine-battement {
+  animation: cine-battement 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+/* Bouton « pause » de la page : fige toutes les animations continues. */
+[data-animations-pause='true'] .cine-respire,
+[data-animations-pause='true'] .cine-defile,
+[data-animations-pause='true'] .cine-battement {
+  animation-play-state: paused;
+}
+
+.cine-grille {
+  background-size: 60px 60px;
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+}
+
+.cine-aurore {
+  background: radial-gradient(circle at 50% 50%, rgb(52 211 153 / 0.24) 0%, rgb(16 185 129 / 0.14) 40%, transparent 70%);
+}
+
+.cine-pilule {
+  background: linear-gradient(145deg, rgb(255 255 255 / 0.07) 0%, rgb(255 255 255 / 0.02) 100%);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  box-shadow:
+    0 10px 30px -10px rgb(0 0 0 / 0.5),
+    inset 0 1px 1px rgb(255 255 255 / 0.12),
+    inset 0 -1px 2px rgb(0 0 0 / 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition:
+    background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.4s;
+}
+
+.cine-pilule:active {
+  background: rgb(255 255 255 / 0.12);
+}
+
+@media (hover: hover) {
+  .cine-pilule:hover {
+    background: linear-gradient(145deg, rgb(255 255 255 / 0.12) 0%, rgb(255 255 255 / 0.03) 100%);
+    border-color: rgb(255 255 255 / 0.26);
+    box-shadow:
+      0 20px 40px -10px rgb(0 0 0 / 0.6),
+      inset 0 1px 1px rgb(255 255 255 / 0.22);
+    color: #ffffff;
+  }
+}
+
+.cine-carte {
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.06) 0%, rgb(255 255 255 / 0.02) 100%);
+  border: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.cine-texte-geant {
+  font-weight: 900;
+  line-height: 0.75;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(255 255 255 / 0.07);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.13) 0%, transparent 60%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Texte métallique : reste au-dessus de 7:1 sur le fond émeraude sombre. */
+.cine-metal {
+  background: linear-gradient(180deg, #ffffff 0%, rgb(255 255 255 / 0.66) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgb(255 255 255 / 0.14));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cine-respire,
+  .cine-defile,
+  .cine-battement {
+    animation: none;
+  }
+}

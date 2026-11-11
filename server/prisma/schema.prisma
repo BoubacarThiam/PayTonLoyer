@@ -1,0 +1,147 @@
+// SQLite en local. Pour PostgreSQL : changer provider et DATABASE_URL.
+// SQLite ne gérant pas les enums Prisma, les statuts sont des chaînes
+// contrôlées par src/constantes.js et par la validation Zod.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                    String    @id @default(cuid())
+  role                  String // PROPRIETAIRE | LOCATAIRE
+  nom                   String
+  telephone             String    @unique
+  email                 String?   @unique
+  motDePasseHash        String
+  doitChangerMotDePasse Boolean   @default(false)
+  tentativesEchouees    Int       @default(0)
+  verrouilleJusqua      DateTime?
+  // Pour un locataire : le propriétaire qui l'a créé
+  proprietaireId        String?
+  proprietaire          User?     @relation("ProprietaireLocataires", fields: [proprietaireId], references: [id], onDelete: Restrict)
+  locataires            User[]    @relation("ProprietaireLocataires")
+  logements             Logement[]
+  baux                  Bail[]
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([proprietaireId])
+}
+
+model Logement {
+  id             String          @id @default(cuid())
+  proprietaireId String
+  proprietaire   User            @relation(fields: [proprietaireId], references: [id], onDelete: Restrict)
+  nom            String
+  adresse        String
+  type           String // APPARTEMENT | MAISON | STUDIO | CHAMBRE | BUREAU | COMMERCE
+  loyerMensuel   Int
+  description    String          @default("")
+  statut         String          @default("LIBRE") // LIBRE | OCCUPE
+  photos         PhotoLogement[]
+  baux           Bail[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@index([proprietaireId])
+}
+
+model PhotoLogement {
+  id         String   @id @default(cuid())
+  logementId String
+  logement   Logement @relation(fields: [logementId], references: [id], onDelete: Cascade)
+  fichier    String
+  ordre      Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([logementId])
+}
+
+model Bail {
+  id           String     @id @default(cuid())
+  logementId   String
+  logement     Logement   @relation(fields: [logementId], references: [id], onDelete: Restrict)
+  locataireId  String
+  locataire    User       @relation(fields: [locataireId], references: [id], onDelete: Restrict)
+  dateEntree   DateTime
+  dateSortie   DateTime?
+  jourEcheance Int
+  loyerMensuel Int
+  actif        Boolean    @default(true)
+  echeances    Echeance[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([logementId])
+  @@index([locataireId])
+}
+
+model Echeance {
+  id           String     @id @default(cuid())
+  bailId       String
+  bail         Bail       @relation(fields: [bailId], references: [id], onDelete: Restrict)
+  periode      String // AAAA-MM
+  montant      Int
+  dateEcheance DateTime
+  // EN_ATTENTE | PAYEE | ANNULEE. « En retard » est calculé à la lecture.
+  statut       String     @default("EN_ATTENTE")
+  payeeLe      DateTime?
+  paiements    Paiement[]
+  quittance    Quittance?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([bailId, periode])
+  @@index([periode])
+  @@index([statut])
+}
+
+model Paiement {
+  id               String     @id @default(cuid())
+  echeanceId       String
+  echeance         Echeance   @relation(fields: [echeanceId], references: [id], onDelete: Restrict)
+  montant          Int
+  methode          String // WAVE | ORANGE_MONEY | FREE_MONEY | ESPECES | VIREMENT
+  fournisseur      String // paydunya | simulateur | manuel
+  reference        String     @unique
+  referenceExterne String?    @unique
+  // INITIE | REUSSI | ECHOUE | ANNULE | ANOMALIE
+  statut           String     @default("INITIE")
+  // Vaut l'id de l'échéance tant que le paiement est en cours, null ensuite.
+  // La contrainte d'unicité garantit un seul paiement en cours par échéance.
+  cleEnCours       String?    @unique
+  urlPaiement      String?
+  note             String?
+  datePaiement     DateTime?
+  quittance        Quittance?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  @@index([echeanceId])
+  @@index([statut])
+}
+
+model Quittance {
+  id         String   @id @default(cuid())
+  echeanceId String   @unique
+  echeance   Echeance @relation(fields: [echeanceId], references: [id], onDelete: Restrict)
+  paiementId String   @unique
+  paiement   Paiement @relation(fields: [paiementId], references: [id], onDelete: Restrict)
+  numero     String   @unique
+  fichier    String
+  createdAt  DateTime @default(now())
+}
+
+model EvenementWebhook {
+  id          String   @id @default(cuid())
+  fournisseur String
+  idExterne   String
+  createdAt   DateTime @default(now())
+
+  @@unique([fournisseur, idExterne])
+}

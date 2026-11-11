@@ -1,0 +1,75 @@
+/* Animation de marque (portage de motion/showreel.html). Scène fixe de 1920×1080, mise à l'échelle par le composant. */
+.am-cadre { position: relative; overflow: hidden; aspect-ratio: 16 / 9; width: 100%; background: #021a14; }
+.am { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; overflow: hidden; color: #fff; background: #021a14; perspective: 1800px; transform-origin: 0 0; font-family: var(--font-sans); }
+.am * { box-sizing: border-box; margin: 0; padding: 0; }
+.am .couche { position: absolute; inset: 0; }
+.am .centre { display: flex; align-items: center; justify-content: center; }
+.am .scene { visibility: hidden; }
+
+.am .grille { background-size: 80px 80px; background-image: linear-gradient(to right, rgb(255 255 255 / .05) 1px, transparent 1px), linear-gradient(to bottom, rgb(255 255 255 / .05) 1px, transparent 1px); mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%); }
+.am .aurore { position: absolute; border-radius: 50%; filter: blur(120px); }
+.am #am-aurore-a { width: 1100px; height: 800px; left: 200px; top: 80px; background: rgb(16 185 129 / .38); }
+.am #am-aurore-b { width: 900px; height: 700px; left: 900px; top: 300px; background: rgb(29 58 138 / .45); }
+.am #am-vignette { background: radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / .55) 100%); z-index: 89; }
+
+.am #am-ligne { position: absolute; left: 360px; top: 539px; width: 1200px; height: 2px; background: linear-gradient(90deg, transparent, #6ee7b7, #fff, #6ee7b7, transparent); transform: scaleX(0); }
+.am #am-embleme { position: relative; width: 760px; }
+.am #am-embleme img, .am .reflet { display: block; width: 100%; }
+.am .reflet { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgb(255 255 255 / .95) 50%, transparent 65%) no-repeat; background-size: 300% 100%; background-position: 150% 0; -webkit-mask: var(--masque) center / 100% 100% no-repeat; mask: var(--masque) center / 100% 100% no-repeat; }
+.am #am-onde { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #6ee7b7; position: absolute; left: 940px; top: 520px; opacity: 0; }
+.am #am-rideau { background: #047857; clip-path: circle(0% at 50% 50%); }
+
+.am .ligne-texte { overflow: hidden; line-height: .92; padding-bottom: 18px; }
+.am .mot { display: inline-block; font-weight: 900; font-size: 228px; letter-spacing: -.055em; text-transform: uppercase; }
+.am .mot + .mot { margin-left: .2em; }
+.am .vert { color: #6ee7b7; }
+.am #am-compteur-bloc { text-align: center; }
+.am #am-compteur { font-weight: 900; font-size: 300px; letter-spacing: -.06em; line-height: .9; font-variant-numeric: tabular-nums; }
+.am #am-unite { font-size: 90px; font-weight: 800; color: #6ee7b7; margin-left: 24px; }
+.am #am-legende { font-size: 40px; font-weight: 600; color: rgb(255 255 255 / .8); margin-top: 22px; }
+.am #am-barre { width: 1100px; height: 18px; border-radius: 99px; background: rgb(255 255 255 / .18); margin: 40px auto 0; overflow: hidden; }
+.am #am-barre i { display: block; height: 100%; border-radius: 99px; background: linear-gradient(90deg, #6ee7b7, #fff); transform-origin: left; transform: scaleX(0); }
+
+.am #am-titre-produit { position: absolute; left: 150px; top: 330px; }
+.am .grand { font-size: 118px; font-weight: 900; letter-spacing: -.05em; line-height: 1; }
+.am #am-telephone { position: absolute; left: 1120px; top: 95px; width: 430px; height: 890px; border-radius: 64px; background: #050b09; padding: 14px; box-shadow: 0 60px 120px -30px rgb(0 0 0 / .8), 0 0 0 2px rgb(255 255 255 / .12); }
+.am .tel-ecran { width: 100%; height: 100%; border-radius: 52px; overflow: hidden; background: #f3f6f4; color: #10231b; }
+.am .tel-haut { background: linear-gradient(160deg, #022c22, #064e3b 45%, #047857); color: #fff; padding: 46px 30px 110px; border-radius: 0 0 40px 40px; }
+.am .tel-haut small { font-size: 22px; color: #d1fae5; }
+.am #am-tel-montant { font-size: 50px; white-space: nowrap; font-weight: 900; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.am #am-tel-barre { height: 12px; border-radius: 99px; background: rgb(255 255 255 / .2); margin-top: 16px; overflow: hidden; }
+.am #am-tel-barre i { display: block; height: 100%; background: #6ee7b7; border-radius: 99px; transform-origin: left; transform: scaleX(0); }
+.am .tuiles { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: -78px 20px 0; position: relative; }
+.am .tuile { background: #fff; border-radius: 26px; padding: 22px; box-shadow: 0 14px 30px -10px rgb(6 78 59 / .25); }
+.am .tuile small { color: #56665e; font-size: 19px; display: block; }
+.am .tuile b { font-size: 25px; white-space: nowrap; font-weight: 900; }
+.am .rangee { display: flex; align-items: center; gap: 16px; background: #fff; margin: 16px 20px 0; border-radius: 24px; padding: 18px; box-shadow: 0 14px 30px -12px rgb(6 78 59 / .25); }
+.am .avatar { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; flex-shrink: 0; }
+.am .rangee b { display: block; font-size: 22px; }
+.am .rangee small { color: #56665e; font-size: 18px; }
+.am .rond-vert { margin-left: auto; width: 52px; height: 52px; border-radius: 50%; background: #047857; flex-shrink: 0; }
+.am .puce { position: absolute; white-space: nowrap; display: flex; align-items: center; gap: 14px; padding: 14px 26px 14px 14px; border-radius: 99px; font-size: 30px; font-weight: 800; background: rgb(255 255 255 / .1); border: 1px solid rgb(255 255 255 / .2); }
+.am .puce span { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; }
+.am #am-notif { position: absolute; left: 980px; top: 820px; display: flex; gap: 18px; align-items: center; background: #fff; color: #10231b; border-radius: 28px; padding: 22px 30px; font-size: 26px; font-weight: 700; box-shadow: 0 30px 60px -20px rgb(0 0 0 / .7); }
+.am #am-notif i { width: 52px; height: 52px; border-radius: 16px; background: #25d366; flex-shrink: 0; }
+.am #am-notif small { display: block; color: #56665e; font-weight: 600; font-size: 20px; }
+
+.am #am-doc { position: absolute; left: 330px; top: 140px; width: 600px; height: 800px; background: #fff; border-radius: 28px; color: #10231b; overflow: hidden; box-shadow: 0 60px 120px -30px rgb(0 0 0 / .8); transform-origin: 50% 0; }
+.am .doc-tete { background: #047857; color: #fff; padding: 44px 46px; }
+.am .doc-tete b { font-size: 46px; font-weight: 900; display: block; }
+.am .doc-tete small { font-size: 22px; opacity: .85; }
+.am .trait { height: 18px; border-radius: 9px; background: #e4ebe7; margin: 30px 46px 0; transform-origin: left; }
+.am #am-doc-montant { margin: 40px 46px 0; background: #ecfdf5; border-radius: 22px; padding: 26px 30px; font-size: 58px; font-weight: 900; letter-spacing: -.04em; }
+.am #am-tampon { position: absolute; left: 560px; top: 560px; border: 10px solid #047857; color: #047857; border-radius: 22px; padding: 6px 34px; font-size: 96px; font-weight: 900; }
+.am #am-titre-doc { position: absolute; left: 1060px; top: 360px; }
+.am #am-coche { position: absolute; left: 1060px; top: 220px; }
+
+.am .bande { position: absolute; left: -400px; white-space: nowrap; font-size: 190px; font-weight: 900; letter-spacing: -.04em; text-transform: uppercase; }
+.am .bande em { font-style: normal; color: rgb(255 255 255 / .2); }
+.am #am-blanc { background: #fff; clip-path: circle(0% at 50% 50%); z-index: 50; }
+
+.am #am-fin { background: #fff; z-index: 60; flex-direction: column; color: #00225f; visibility: hidden; }
+.am #am-logo-fin { position: relative; width: 980px; }
+.am #am-logo-fin img { display: block; width: 100%; }
+.am #am-accroche { font-size: 50px; font-weight: 800; color: #065f46; margin-top: 18px; }
+.am #am-mentions { font-size: 22px; font-weight: 700; letter-spacing: .32em; text-transform: uppercase; color: rgb(0 34 95 / .62); margin-top: 18px; }

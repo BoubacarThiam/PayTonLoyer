@@ -1,0 +1,13 @@
+{
+  "name": "paytonloyer-motion",
+  "private": true,
+  "type": "module",
+  "description": "Rendu du showreel PayTonLoyer (HTML + GSAP) en vidéo MP4.",
+  "scripts": {
+    "apercu": "node rendre.mjs --apercu",
+    "rendre": "node rendre.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.57.0"
+  }
+}

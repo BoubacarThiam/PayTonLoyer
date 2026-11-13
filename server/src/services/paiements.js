@@ -164,7 +164,7 @@ export async function initierPaiementEnLigne({ echeance, methode, locataire }) {
   }
 
   try {
-    const { referenceExterne, urlPaiement } = await fournisseur.initierPaiement({
+    const { referenceExterne, urlPaiement, instructions } = await fournisseur.initierPaiement({
       reference,
       montant: echeance.montant,
       description: `Loyer ${libellePeriode(echeance.periode)}`,
@@ -176,7 +176,8 @@ export async function initierPaiementEnLigne({ echeance, methode, locataire }) {
         webhook: `${config.apiUrl}/api/paiements/webhook/${fournisseur.nom}`,
       },
     });
-    return await prisma.paiement.update({ where: { id: paiement.id }, data: { referenceExterne, urlPaiement } });
+    // instructions : consignes de l'opérateur pour un paiement poussé sur le téléphone (affichées au locataire).
+    return await prisma.paiement.update({ where: { id: paiement.id }, data: { referenceExterne, urlPaiement, note: instructions || null } });
   } catch (erreur) {
     await prisma.paiement.update({ where: { id: paiement.id }, data: { statut: STATUTS_PAIEMENT.ECHOUE, cleEnCours: null } });
     if (erreur instanceof ErreurFournisseur) {
@@ -192,6 +193,8 @@ export async function initierPaiementEnLigne({ echeance, methode, locataire }) {
 export async function traiterWebhook(nomFournisseur, req) {
   const fournisseur = obtenirFournisseur(nomFournisseur);
   const { idEvenement, referenceExterne } = fournisseur.webhook(req);
+  // Événement authentique mais sans lien avec un paiement (test, retrait…) : rien à faire.
+  if (!referenceExterne) return { ignore: true };
 
   const dejaTraite = await prisma.evenementWebhook.findUnique({
     where: { fournisseur_idExterne: { fournisseur: fournisseur.nom, idExterne: idEvenement } },

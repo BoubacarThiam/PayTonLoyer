@@ -86,6 +86,10 @@ export default function RetourPaiement({ annule = false }) {
         )}
         {statut === 'INITIE' && (
           <EtatVide Icone={Clock} titre="Confirmation en cours" texte={recherche ? 'Nous attendons la réponse de votre opérateur…' : 'La réponse tarde à arriver. Si vous avez validé le paiement, il sera pris en compte automatiquement.'}>
+            {/* Paiement poussé sur le téléphone : consignes de l'opérateur (code USSD, notification…). */}
+            {resultat.paiement.note && (
+              <p className="mb-4 rounded-2xl bg-attente-fond p-3.5 text-left text-sm font-semibold text-attente-texte">{resultat.paiement.note}</p>
+            )}
             <div className="space-y-2">
               {!recherche && <Bouton onClick={() => interroger()}>Vérifier à nouveau</Bouton>}
               {accueil}

@@ -78,7 +78,7 @@ export default function Payer() {
             </Bouton>
             <p className="mt-3 flex items-center justify-center gap-1.5 text-sm text-secondaire">
               <ShieldCheck size={16} aria-hidden="true" />
-              Validation sur la page de paiement sécurisée.
+              Vous validerez le paiement sur votre téléphone ou sur la page sécurisée.
             </p>
           </>
         )}

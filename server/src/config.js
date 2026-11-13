@@ -31,6 +31,13 @@ export const config = {
         FREE_MONEY: process.env.PAYDUNYA_CANAL_FREE_MONEY || '',
       },
     },
+    saspay: {
+      apiKey: process.env.SASPAY_API_KEY || '',
+      webhookSecret: process.env.SASPAY_WEBHOOK_SECRET || '',
+      emailClient: process.env.SASPAY_EMAIL_CLIENT || '',
+      baseUrl: process.env.SASPAY_BASE_URL || 'https://api.saspay.me/api/v1',
+      autoriserLive: process.env.SASPAY_AUTORISER_LIVE === 'oui',
+    },
   },
 };
 

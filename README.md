@@ -202,6 +202,7 @@ sequenceDiagram
 | **Simulateur** (par défaut) | `PAIEMENT_FOURNISSEUR=simulateur` | Démonstration et tests : une page permet de valider, faire échouer ou annuler. Refusé en production. |
 | **PayDunya sandbox** | `PAIEMENT_FOURNISSEUR=paydunya`, `PAYDUNYA_MODE=test` | Paiements de test avec vos clés PayDunya. Exposez l’API par un tunnel (`ngrok http 4000`) et mettez son URL dans `API_URL` pour recevoir les webhooks. |
 | **PayDunya production** | `PAYDUNYA_MODE=live` | Vraies transactions, clés de production, URLs publiques en HTTPS. |
+| **SasPay** | `PAIEMENT_FOURNISSEUR=saspay`, `SASPAY_API_KEY`, `SASPAY_WEBHOOK_SECRET`, `SASPAY_EMAIL_CLIENT` | Wave (`wave_sn`), Orange Money (`orange_sn`), Free Money (`freemoney_sn`). Clé `sk_test_…` = bac à sable. Une clé `sk_live_…` est **refusée hors production**, sauf `SASPAY_AUTORISER_LIVE=oui`. Le webhook se déclare dans le tableau de bord SasPay : `https://<votre-api>/api/paiements/webhook/saspay`, événements `transaction.success`, `transaction.failed` et `transaction.cancelled`. |
 
 Les **paiements en espèces ou par virement** sont enregistrés par le propriétaire depuis l’écran Paiements.
 

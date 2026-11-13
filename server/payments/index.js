@@ -12,6 +12,7 @@
 // Pour ajouter un agrégateur : créer un module avec cette interface et l'ajouter ci-dessous.
 import { config } from '../src/config.js';
 import { creerPaydunya } from './paydunya.js';
+import { creerSaspay } from './saspay.js';
 import { simulateur } from './simulateur.js';
 
 const FOURNISSEURS = {
@@ -20,6 +21,7 @@ const FOURNISSEURS = {
     return simulateur;
   },
   paydunya: () => creerPaydunya(config.paiement.paydunya),
+  saspay: () => creerSaspay(config.paiement.saspay, { enProduction: config.enProduction }),
 };
 
 const instances = new Map();

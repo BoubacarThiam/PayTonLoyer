@@ -25,7 +25,8 @@ export function creerApp() {
   if (config.enProduction) app.set('trust proxy', 1);
 
   app.use(helmet());
-  app.use(express.json({ limit: '100kb' }));
+  // Le corps brut est conservé : la signature des webhooks SasPay se calcule dessus, octet pour octet.
+  app.use(express.json({ limit: '100kb', verify: (req, res, tampon) => { req.rawBody = tampon; } }));
   app.use(express.urlencoded({ extended: true, limit: '100kb' }));
   app.use(cookieParser());
 

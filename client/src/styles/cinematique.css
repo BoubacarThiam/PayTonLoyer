@@ -95,6 +95,35 @@
   }
 }
 
+/* Grain du héros (remplace la texture du composant d'origine). */
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+/* Deuxième halo, bleu de la marque, qui dérive lentement. */
+@keyframes cine-derive {
+  0% {
+    transform: translate(-10%, 5%) scale(1);
+  }
+  100% {
+    transform: translate(12%, -8%) scale(1.15);
+  }
+}
+
+.cine-derive {
+  animation: cine-derive 14s ease-in-out infinite alternate;
+}
+
+[data-animations-pause='true'] .cine-derive {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cine-derive {
+    animation: none;
+  }
+}
+
 .cine-carte {
   background: linear-gradient(160deg, rgb(255 255 255 / 0.06) 0%, rgb(255 255 255 / 0.02) 100%);
   border: 1px solid rgb(255 255 255 / 0.1);

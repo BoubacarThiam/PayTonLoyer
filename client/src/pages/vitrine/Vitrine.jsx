@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ArrowRight, BellRing, CalendarCheck, Check, ChevronDown, FileText, HandCoins, Heart, LayoutDashboard, Pause, Play, Smartphone, X } from 'lucide-react';
 import { Bandeau, CinematicFooter, MagneticButton } from '@/components/ui/motion-footer';
-import { PASTILLES } from '@/utils/moyens.js';
-import { TelephoneLocataire, TelephoneProprietaire } from './Maquettes.jsx';
+import { PrismaHero } from '@/components/ui/prisma-hero';
+import { TelephoneLocataire } from './Maquettes.jsx';
 import AnimationMarque from './AnimationMarque.jsx';
 
 const LARGEUR = 'mx-auto w-full max-w-6xl px-5 lg:px-8';
@@ -52,22 +52,18 @@ function Fond() {
   );
 }
 
+// Les liens de section sont dans l'onglet du héros ; l'en-tête garde le logo et l'accès au compte.
 function Navigation() {
-  const lien = 'flex min-h-11 items-center font-semibold text-white/75 transition-colors hover:text-white';
   return (
     <header className="pt-safe sticky top-0 z-40 border-b border-white/10 bg-marque-950/80 backdrop-blur-xl">
       <nav aria-label="Navigation du site" className={`${LARGEUR} flex min-h-16 items-center justify-between gap-4`}>
         <Link to="/" className="flex min-h-11 items-center gap-2.5 text-lg font-extrabold">
           <img src="/logo/embleme-blanc.png" alt="" width="84" height="36" className="h-9 w-auto" />
-          PayTonLoyer
+          {/* Sur les très petits écrans, le nom reste lu par les lecteurs d'écran mais n'est plus affiché. */}
+          <span className="sr-only min-[400px]:not-sr-only">PayTonLoyer</span>
         </Link>
-        <div className="hidden items-center gap-8 lg:flex">
-          <a href="#fonctionnalites" className={lien}>Fonctionnalités</a>
-          <a href="#locataires" className={lien}>Locataires</a>
-          <a href="#questions" className={lien}>Questions</a>
-        </div>
         <div className="flex items-center gap-2">
-          <Link to="/connexion" className="flex min-h-11 items-center px-3 font-bold text-white">Se connecter</Link>
+          <Link to="/connexion" className="flex min-h-11 items-center px-3 font-bold whitespace-nowrap text-white">Se connecter</Link>
           <Link to="/inscription" className="cine-pilule hidden min-h-11 items-center rounded-full px-5 font-bold sm:flex">Créer un compte</Link>
         </div>
       </nav>
@@ -75,46 +71,48 @@ function Navigation() {
   );
 }
 
+const LIENS_HEROS = [
+  { libelle: 'Fonctionnalités', href: '#fonctionnalites' },
+  { libelle: 'Démo', href: '#video', classe: 'hidden sm:block' },
+  { libelle: 'Locataires', href: '#locataires' },
+  { libelle: 'Questions', href: '#questions' },
+];
+
+function FondHeros() {
+  return (
+    <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(120%_90%_at_80%_10%,#065f46_0%,#022c22_55%,#01120d_100%)]">
+      <div className="cine-aurore cine-respire absolute top-1/2 left-1/2 h-[80%] w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-[50%] blur-[80px]" />
+      <div className="cine-derive absolute top-[8%] right-[-10%] h-[60%] w-[55%] rounded-full bg-[#1d3a8a]/40 blur-[110px]" />
+      <div className="cine-grille absolute inset-0" />
+    </div>
+  );
+}
+
 function Heros() {
   return (
-    <section className="relative overflow-hidden">
-      <Fond />
-      <div className={`${LARGEUR} relative grid items-center gap-14 pt-14 pb-20 lg:min-h-[calc(100svh-4rem)] lg:grid-cols-[1.2fr_1fr] lg:py-16`}>
-        <div>
-          <p data-intro className="cine-pilule inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-white/85">
-            <span aria-hidden="true" className="size-2 rounded-full bg-marque-300" />
-            Gestion locative · Sénégal
-          </p>
-          <h1 data-intro className="cine-metal mt-6 text-[2.75rem] leading-[1.02] font-black tracking-tighter text-balance lg:text-[4.75rem]">
-            Vos loyers encaissés, sans courir après personne.
-          </h1>
-          <p data-intro className="mt-6 max-w-xl text-lg text-white/75 lg:text-xl">
-            Suivez vos logements, relancez vos locataires sur WhatsApp et recevez vos loyers par Mobile Money. Tout au même endroit.
-          </p>
-          <div data-intro className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <MagneticButton as={Link} to="/inscription" className={BOUTON_PLEIN}>
-              Créer mon compte propriétaire
-              <ArrowRight size={20} aria-hidden="true" />
-            </MagneticButton>
-            <MagneticButton as={Link} to="/connexion" className={BOUTON_VERRE}>Je suis locataire</MagneticButton>
-          </div>
-          <ul data-intro className="mt-9 flex flex-wrap gap-2" aria-label="Paiements acceptés">
-            {[['WAVE', 'Wave'], ['ORANGE_MONEY', 'Orange Money'], ['FREE_MONEY', 'Free Money']].map(([code, libelle]) => (
-              <li key={code} className="cine-pilule flex items-center gap-2 rounded-full py-1 pr-4 pl-1 text-sm font-semibold">
-                <span aria-hidden="true" className={`flex size-7 items-center justify-center rounded-full text-[11px] font-extrabold ${PASTILLES[code].classes}`}>{PASTILLES[code].sigle}</span>
-                {libelle}
-              </li>
-            ))}
-          </ul>
+    <PrismaHero
+      titre="Pay Ton Loyer"
+      espaceTitre="0"
+      fond={<FondHeros />}
+      liens={LIENS_HEROS}
+      description="Vos loyers encaissés, sans courir après personne. Suivez vos logements, relancez vos locataires sur WhatsApp et recevez vos loyers par Wave, Orange Money ou Free Money."
+      action={
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+          <Link
+            to="/inscription"
+            className="group inline-flex min-h-12 items-center gap-2 rounded-full bg-[#E1E0CC] py-1 pr-1 pl-5 font-semibold text-black transition-all hover:gap-3"
+          >
+            Créer mon compte
+            <span className="flex size-10 items-center justify-center rounded-full bg-black transition-transform group-hover:scale-110">
+              <ArrowRight size={16} className="text-[#E1E0CC]" aria-hidden="true" />
+            </span>
+          </Link>
+          <Link to="/connexion" className="flex min-h-11 items-center font-semibold text-[#E1E0CC] underline-offset-4 hover:underline">
+            Je suis locataire
+          </Link>
         </div>
-        <div data-intro className="relative">
-          <div aria-hidden="true" className="absolute inset-x-10 top-10 bottom-0 rounded-full bg-marque-300/20 blur-3xl" />
-          <div className="relative lg:rotate-[4deg]">
-            <TelephoneProprietaire />
-          </div>
-        </div>
-      </div>
-    </section>
+      }
+    />
   );
 }
 
@@ -255,7 +253,6 @@ function useAnimations(ref) {
   useEffect(() => {
     const mm = gsap.matchMedia();
     mm.add('(prefers-reduced-motion: no-preference)', () => {
-      gsap.from('[data-intro]', { y: 32, opacity: 0, duration: 0.9, stagger: 0.09, ease: 'power3.out' });
       gsap.utils.toArray('[data-reveler]').forEach((el) => {
         gsap.from(el, { y: 40, opacity: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 88%', once: true } });
       });

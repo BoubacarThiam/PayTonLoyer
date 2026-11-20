@@ -6,6 +6,7 @@ import { useRequete } from '../../hooks/useRequete.js';
 import { Bouton, EnTete, EtatVide, MessageErreur, Squelettes } from '../../components/ui.jsx';
 import { dePeriode, fcfa, nombre } from '../../utils/format.js';
 import { PASTILLES } from '../../utils/moyens.js';
+import Equivalents from '../../components/Equivalents.jsx';
 
 export default function Payer() {
   const { echeanceId } = useParams();
@@ -45,6 +46,7 @@ export default function Payer() {
                 {nombre(echeance.montant)}
                 <span className="ml-2 text-base font-bold">FCFA</span>
               </p>
+              <Equivalents montant={echeance.montant} className="mt-1 text-sm text-marque-100" />
             </div>
 
             <fieldset className="mb-6">

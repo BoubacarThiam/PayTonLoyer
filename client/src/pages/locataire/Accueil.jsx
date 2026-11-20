@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-import { AlertTriangle, CheckCircle2, ChevronRight, ImageOff, KeyRound, MapPin, Phone } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, ChevronRight, ExternalLink, ImageOff, KeyRound, MapPin, Phone } from 'lucide-react';
+import Equivalents from '../../components/Equivalents.jsx';
+import { lienCarte } from '../../components/CartePosition.jsx';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useRequete } from '../../hooks/useRequete.js';
 import { Avatar, BadgeStatut, EtatVide, Hero, LienBouton, MessageErreur, Squelettes, TitreSection } from '../../components/ui.jsx';
@@ -20,6 +22,7 @@ function BlocEcheance({ echeance: e, totalRetard }) {
       <p className="text-[15px] text-marque-100">
         {e.statutReel === 'EN_RETARD' ? 'Était dû le' : 'À payer avant le'} {dateFr(e.dateEcheance)}
       </p>
+      <Equivalents montant={e.montant} className="mt-1 text-sm text-marque-100" />
       {totalRetard > e.montant && (
         <p className="mt-3 flex items-center gap-2 rounded-2xl bg-white/10 px-3 py-2 text-sm font-semibold">
           <AlertTriangle size={16} className="shrink-0" aria-hidden="true" />
@@ -112,6 +115,12 @@ export default function Accueil() {
                   <MapPin size={16} className="shrink-0" aria-hidden="true" />
                   <span>{TYPES_LOGEMENT[d.logement.type]} · {d.logement.adresse}</span>
                 </p>
+                {d.logement.latitude != null && (
+                  <a href={lienCarte(d.logement)} target="_blank" rel="noreferrer" className="mt-1 inline-flex min-h-11 items-center gap-1 text-sm font-bold text-marque-700">
+                    Voir sur la carte
+                    <ExternalLink size={16} aria-hidden="true" />
+                  </a>
+                )}
                 <dl className="mt-4 grid grid-cols-2 gap-3">
                   <div>
                     <dt className="text-sm text-secondaire">Loyer mensuel</dt>

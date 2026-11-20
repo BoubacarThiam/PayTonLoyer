@@ -7,6 +7,7 @@ import { valider } from '../middlewares/valider.js';
 import { uploadPhotos } from '../middlewares/upload.js';
 import * as s from '../validators/schemas.js';
 import { enregistrerPhoto, supprimerPhoto } from '../services/images.js';
+import { geocoder } from '../services/geocodage.js';
 import { logementPublic } from '../utils/serialiser.js';
 import { periodeDe } from '../utils/dates.js';
 
@@ -38,11 +39,19 @@ router.get('/', async (req, res) => {
   res.json({ logements: logements.map(serialiser) });
 });
 
-router.post('/', valider({ body: s.logement }), async (req, res) => {
-  const logement = await prisma.logement.create({
-    data: { ...req.valide.body, proprietaireId: req.user.id },
+// Position estimée depuis l'adresse ; null si introuvable (la carte n'est alors pas affichée).
+async function positionner(logementId, adresse) {
+  const position = await geocoder(adresse);
+  return prisma.logement.update({
+    where: { id: logementId },
+    data: { latitude: position?.latitude ?? null, longitude: position?.longitude ?? null },
     include: inclusions,
   });
+}
+
+router.post('/', valider({ body: s.logement }), async (req, res) => {
+  const cree = await prisma.logement.create({ data: { ...req.valide.body, proprietaireId: req.user.id } });
+  const logement = await positionner(cree.id, cree.adresse);
   res.status(201).json({ logement: serialiser(logement) });
 });
 
@@ -70,7 +79,9 @@ router.put('/:id', valider({ params: s.paramsId, body: s.logement }), async (req
     }
     return tx.logement.update({ where: { id: actuel.id }, data: donnees, include: inclusions });
   });
-  res.json({ logement: serialiser(logement) });
+  // On ne relance la recherche de position que si l'adresse change ou n'avait pas été trouvée.
+  const aPositionner = donnees.adresse !== actuel.adresse || actuel.latitude == null;
+  res.json({ logement: serialiser(aPositionner ? await positionner(logement.id, logement.adresse) : logement) });
 });
 
 router.delete('/:id', valider({ params: s.paramsId }), async (req, res) => {

@@ -8,6 +8,7 @@ import Connexion from './pages/auth/Connexion.jsx';
 
 // Chaque profil ne télécharge que ses propres écrans.
 const Vitrine = lazy(() => import('./pages/vitrine/Vitrine.jsx'));
+const Verifier = lazy(() => import('./pages/Verifier.jsx'));
 const Inscription = lazy(() => import('./pages/auth/Inscription.jsx'));
 const ChangerCode = lazy(() => import('./pages/auth/ChangerCode.jsx'));
 const Compte = lazy(() => import('./pages/Compte.jsx'));
@@ -65,6 +66,7 @@ export default function App() {
         <Route path="/connexion" element={<Connexion />} />
         <Route path="/inscription" element={<Inscription />} />
         <Route path="/changer-code" element={<ChangerCode />} />
+        <Route path="/verifier/:numero" element={<Verifier />} />
 
         <Route element={<Protege role="PROPRIETAIRE" />}>
           <Route path="/proprietaire" element={<MiseProprietaire />}>

@@ -3,6 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import PDFDocument from 'pdfkit';
+import QRCode from 'qrcode';
+import { config } from '../config.js';
 import { prisma } from '../prisma.js';
 import { LIBELLES_METHODE, STATUTS_ECHEANCE, STATUTS_PAIEMENT } from '../constantes.js';
 import { dePeriode, formatDateFr } from '../utils/dates.js';
@@ -20,7 +22,47 @@ const FILET = '#e2e8e2';
 
 const cheminDe = (fichier) => path.join(DOSSIER_QUITTANCES, path.basename(fichier));
 
-function dessiner(doc, { numero, echeance, paiement, bail }) {
+export const urlVerification = (numero) => `${config.clientUrl}/verifier/${encodeURIComponent(numero)}`;
+
+// Initiales seulement : la page de vérification est publique, elle ne doit pas exposer les noms.
+export function initiales(nom = '') {
+  return nom
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((mot) => `${mot[0].toUpperCase()}.`)
+    .join(' ');
+}
+
+// Informations publiques d'une quittance, ou null si le numéro n'existe pas.
+export async function verifierQuittance(numero) {
+  const q = await prisma.quittance.findUnique({
+    where: { numero },
+    include: {
+      paiement: { select: { datePaiement: true, methode: true } },
+      echeance: {
+        select: {
+          periode: true,
+          montant: true,
+          bail: { select: { locataire: { select: { nom: true } }, logement: { select: { proprietaire: { select: { nom: true } } } } } },
+        },
+      },
+    },
+  });
+  if (!q) return null;
+  return {
+    numero: q.numero,
+    periode: q.echeance.periode,
+    montant: q.echeance.montant,
+    datePaiement: q.paiement.datePaiement,
+    methode: q.paiement.methode,
+    emiseLe: q.createdAt,
+    bailleur: initiales(q.echeance.bail.logement.proprietaire.nom),
+    locataire: initiales(q.echeance.bail.locataire.nom),
+  };
+}
+
+function dessiner(doc, { numero, echeance, paiement, bail, qrCode }) {
   const { logement, locataire } = bail;
   const bailleur = logement.proprietaire;
   const gauche = 50;
@@ -74,6 +116,19 @@ function dessiner(doc, { numero, echeance, paiement, bail }) {
   ligne('Mode de paiement', LIBELLES_METHODE[paiement.methode]);
   ligne('Référence', paiement.reference);
 
+  // QR code de vérification : il mène à une page publique qui confirme l'authenticité de la quittance.
+  if (qrCode) {
+    const yQr = y + 30;
+    doc.image(qrCode.image, gauche, yQr, { width: 92 });
+    doc.fillColor(ENCRE).font('Helvetica-Bold').fontSize(11).text('Vérifier cette quittance', gauche + 110, yQr + 14, { width: largeur - 110 });
+    doc
+      .fillColor(GRIS)
+      .font('Helvetica')
+      .fontSize(9.5)
+      .text('Scannez ce code avec un téléphone pour confirmer qu’elle a bien été émise par PayTonLoyer :', gauche + 110, yQr + 32, { width: largeur - 110 })
+      .text(qrCode.url, { width: largeur - 110 });
+  }
+
   doc.fillColor(GRIS).font('Helvetica').fontSize(9).text(
     `Quittance établie le ${formatDateFr(new Date())} via PayTonLoyer. Elle atteste du seul paiement du loyer de la période indiquée.`,
     gauche,
@@ -86,6 +141,8 @@ async function ecrirePdf(fichier, donnees) {
   await fs.promises.mkdir(DOSSIER_QUITTANCES, { recursive: true });
   const cible = cheminDe(fichier);
   const temporaire = `${cible}.${crypto.randomBytes(4).toString('hex')}.tmp`;
+  const url = urlVerification(donnees.numero);
+  const qrCode = { url, image: await QRCode.toBuffer(url, { margin: 1, width: 300, color: { dark: '#10231b', light: '#ffffff' } }) };
   await new Promise((resoudre, rejeter) => {
     const doc = new PDFDocument({
       size: 'A4',
@@ -96,7 +153,7 @@ async function ecrirePdf(fichier, donnees) {
     flux.on('finish', resoudre).on('error', rejeter);
     doc.on('error', rejeter);
     doc.pipe(flux);
-    dessiner(doc, donnees);
+    dessiner(doc, { ...donnees, qrCode });
     doc.end();
   });
   await fs.promises.rename(temporaire, cible);

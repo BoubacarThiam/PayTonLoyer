@@ -90,6 +90,11 @@ PayTonLoyer réunit tout au même endroit :
 - **Paiement par Mobile Money** depuis le téléphone, avec confirmation à l’écran.
 - **Historique** des loyers et téléchargement des quittances.
 
+### Services connectés (gratuits, sans clé)
+- **Carte des logements** : l’adresse est convertie en position par [Nominatim / OpenStreetMap](https://nominatim.org/) puis affichée sur une carte. La position est estimée : à Dakar, préciser le quartier et la ville améliore le résultat. Les règles d’usage de Nominatim (1 requête par seconde, application identifiée) sont respectées. Désactivable avec `GEOCODAGE_ACTIF=non`.
+- **Loyer en euros et en dollars** pour les locataires de la diaspora : euro au taux fixe officiel (1 € = 655,957 FCFA), dollar d’après le taux de la BCE via [Frankfurter](https://frankfurter.dev/). Montants indicatifs.
+- **QR code de vérification** sur chaque quittance : il ouvre la page publique `/verifier/<numéro>`, qui confirme l’authenticité de la quittance en n’affichant que les initiales des personnes. Le QR code est généré localement, sans service externe.
+
 ### Côté technique
 - **Application web installable (PWA)**, pensée pour les petits écrans et les connexions lentes : écrans chargés à la demande, polices hébergées dans l’application, images compressées.
 - Interface entièrement en français, montants en FCFA (`150 000 FCFA`), dates au format français.

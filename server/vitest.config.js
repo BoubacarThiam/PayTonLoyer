@@ -26,6 +26,8 @@ export default defineConfig({
       SASPAY_WEBHOOK_SECRET: 'secret-webhook-de-test',
       SASPAY_EMAIL_CLIENT: 'paiements@test.sn',
       SASPAY_AUTORISER_LIVE: '',
+      // Pas d'appel à OpenStreetMap pendant les tests.
+      GEOCODAGE_ACTIF: 'non',
     },
   },
 });

@@ -43,6 +43,9 @@ model Logement {
   loyerMensuel   Int
   description    String          @default("")
   statut         String          @default("LIBRE") // LIBRE | OCCUPE
+  // Position estimée à partir de l'adresse (OpenStreetMap) ; vide si l'adresse n'a pas été trouvée.
+  latitude       Float?
+  longitude      Float?
   photos         PhotoLogement[]
   baux           Bail[]
   createdAt      DateTime        @default(now())

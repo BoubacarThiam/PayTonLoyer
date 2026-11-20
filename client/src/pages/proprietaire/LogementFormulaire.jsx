@@ -4,6 +4,7 @@ import { ImagePlus, Trash2 } from 'lucide-react';
 import { api } from '../../api/client.js';
 import { Bouton, Champ, EnTete, Liste, MessageErreur, Modale, Squelettes, ZoneTexte } from '../../components/ui.jsx';
 import { TYPES_LOGEMENT } from '../../utils/format.js';
+import CartePosition from '../../components/CartePosition.jsx';
 
 const VIDE = { nom: '', adresse: '', type: 'APPARTEMENT', loyerMensuel: '', description: '', statut: 'LIBRE' };
 
@@ -129,6 +130,13 @@ export default function LogementFormulaire() {
               )}
             </div>
             <input ref={inputPhotos} type="file" accept="image/jpeg,image/png,image/webp" multiple hidden onChange={ajouterPhotos} />
+          </section>
+        )}
+
+        {edition && logement && (
+          <section className="mb-5" aria-label="Localisation du logement">
+            <h2 className="mb-2 font-medium">Localisation</h2>
+            <CartePosition logement={logement} />
           </section>
         )}
 

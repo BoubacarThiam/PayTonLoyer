@@ -59,9 +59,9 @@ async function main() {
   });
 
   const logementsDemo = [
-    { nom: 'Appartement Sacré-Cœur', adresse: 'Sacré-Cœur 3, villa 120, Dakar', type: 'APPARTEMENT', loyerMensuel: 250000, description: 'F3 lumineux au 2e étage, deux chambres, salon, cuisine équipée.', couleur: '#15803d' },
-    { nom: 'Studio Mermoz', adresse: 'Mermoz Pyrotechnie, rue 12, Dakar', type: 'STUDIO', loyerMensuel: 120000, description: 'Studio meublé proche de la VDN, eau comprise.', couleur: '#166534' },
-    { nom: 'Maison Parcelles', adresse: 'Parcelles Assainies, Unité 15, Dakar', type: 'MAISON', loyerMensuel: 180000, description: 'Maison de plain-pied avec cour, trois chambres.', couleur: '#14532d' },
+    { nom: 'Appartement Sacré-Cœur', adresse: 'Sacré-Cœur 3, villa 120, Dakar', type: 'APPARTEMENT', loyerMensuel: 250000, description: 'F3 lumineux au 2e étage, deux chambres, salon, cuisine équipée.', latitude: 14.72046, longitude: -17.46794, couleur: '#15803d' },
+    { nom: 'Studio Mermoz', adresse: 'Mermoz Pyrotechnie, rue 12, Dakar', type: 'STUDIO', loyerMensuel: 120000, description: 'Studio meublé proche de la VDN, eau comprise.', latitude: 14.7066, longitude: -17.4751, couleur: '#166534' },
+    { nom: 'Maison Parcelles', adresse: 'Parcelles Assainies, Unité 15, Dakar', type: 'MAISON', loyerMensuel: 180000, description: 'Maison de plain-pied avec cour, trois chambres.', latitude: 14.7629, longitude: -17.4402, couleur: '#14532d' },
   ];
 
   const locatairesDemo = [

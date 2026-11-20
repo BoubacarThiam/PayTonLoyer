@@ -16,6 +16,7 @@ import quittancesRoutes from './routes/quittances.js';
 import simulateurRoutes from './routes/simulateur.js';
 import { gestionErreurs, routeInconnue } from './middlewares/erreurs.js';
 import { DOSSIER_UPLOADS } from './services/images.js';
+import { tauxDeChange } from './services/devises.js';
 
 const ici = path.dirname(fileURLToPath(import.meta.url));
 
@@ -24,7 +25,12 @@ export function creerApp() {
   app.disable('x-powered-by');
   if (config.enProduction) app.set('trust proxy', 1);
 
-  app.use(helmet());
+  // La seule source extérieure autorisée en cadre est la carte OpenStreetMap des logements.
+  app.use(
+    helmet({
+      contentSecurityPolicy: { directives: { 'frame-src': ["'self'", 'https://www.openstreetmap.org'] } },
+    }),
+  );
   // Le corps brut est conservé : la signature des webhooks SasPay se calcule dessus, octet pour octet.
   app.use(express.json({ limit: '100kb', verify: (req, res, tampon) => { req.rawBody = tampon; } }));
   app.use(express.urlencoded({ extended: true, limit: '100kb' }));
@@ -33,6 +39,7 @@ export function creerApp() {
   app.use('/uploads', express.static(DOSSIER_UPLOADS, { maxAge: '30d', immutable: true }));
 
   app.get('/api/sante', (req, res) => res.json({ ok: true }));
+  app.get('/api/devises', async (req, res) => res.json(await tauxDeChange()));
   app.use('/api/auth', authRoutes);
   app.use('/api/logements', logementsRoutes);
   app.use('/api/locataires', locatairesRoutes);

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FileDown, HandCoins, MessageCircle } from 'lucide-react';
+import { FileDown, HandCoins, MessageCircle, MessageSquareText } from 'lucide-react';
 import { api } from '../api/client.js';
 import { aujourdhuiIso, dateFr, fcfa, libellePeriode, METHODES, moisCourt, nombre } from '../utils/format.js';
 import { Avatar, BadgeStatut, Bouton, Carte, Champ, LienBouton, Liste, MessageErreur, Modale } from './ui.jsx';
@@ -72,6 +72,17 @@ export default function LigneEcheance({ echeance, afficherLocataire, surEncaisse
   const titre = afficherLocataire ? bail.locataire.nom : libellePeriode(echeance.periode);
   const nomLogement = bail.logement?.nom;
   const detail = paiement ? `Payé le ${dateFr(paiement.datePaiement)} · ${METHODES[paiement.methode]}` : `Échéance : ${dateFr(echeance.dateEcheance)}`;
+  const [sms, setSms] = useState({ envoi: false, message: null, erreur: false });
+
+  async function relancerParSms() {
+    setSms({ envoi: true, message: null, erreur: false });
+    try {
+      const { message } = await api.post(`/echeances/${echeance.id}/rappel-sms`);
+      setSms({ envoi: false, message, erreur: false });
+    } catch (err) {
+      setSms({ envoi: false, message: err.message, erreur: true });
+    }
+  }
 
   return (
     <Carte>
@@ -93,21 +104,45 @@ export default function LigneEcheance({ echeance, afficherLocataire, surEncaisse
       </div>
 
       {(impayee || quittance) && (
-        <div className="mt-3 flex gap-2">
+        // Relances (WhatsApp, SMS) côte à côte, puis l'encaissement sur toute la largeur.
+        <div className="mt-3 grid grid-cols-2 gap-2">
           {lienWhatsapp && (
-            <LienBouton variante="secondaire" taille="petite" href={lienWhatsapp} target="_blank" rel="noreferrer">
-              <MessageCircle size={20} aria-hidden="true" />
-              Relancer
-            </LienBouton>
+            <>
+              <LienBouton variante="secondaire" taille="petite" href={lienWhatsapp} target="_blank" rel="noreferrer">
+                <MessageCircle size={20} aria-hidden="true" />
+                WhatsApp
+              </LienBouton>
+              <Bouton
+                variante="secondaire"
+                taille="petite"
+                onClick={relancerParSms}
+                chargement={sms.envoi}
+                aria-label={`Relancer ${bail.locataire?.nom ?? 'le locataire'} par SMS`}
+              >
+                {!sms.envoi && <MessageSquareText size={20} aria-hidden="true" />}
+                SMS
+              </Bouton>
+            </>
           )}
           {impayee && (
-            <Bouton variante="neutre" taille="petite" onClick={() => surEncaisser(echeance)}>
-              <HandCoins size={20} aria-hidden="true" />
-              Encaisser
-            </Bouton>
+            <div className="col-span-2">
+              <Bouton variante="neutre" taille="petite" onClick={() => surEncaisser(echeance)}>
+                <HandCoins size={20} aria-hidden="true" />
+                Encaisser
+              </Bouton>
+            </div>
           )}
-          <LienQuittance quittance={quittance} taille="petite" />
+          {quittance && (
+            <div className="col-span-2">
+              <LienQuittance quittance={quittance} taille="petite" />
+            </div>
+          )}
         </div>
+      )}
+      {sms.message && (
+        <p role="status" className={`mt-2 text-sm font-semibold ${sms.erreur ? 'text-retard-texte' : 'text-succes-texte'}`}>
+          {sms.message}
+        </p>
       )}
     </Carte>
   );

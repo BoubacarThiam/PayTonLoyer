@@ -28,6 +28,8 @@ export default defineConfig({
       SASPAY_AUTORISER_LIVE: '',
       // Pas d'appel à OpenStreetMap pendant les tests.
       GEOCODAGE_ACTIF: 'non',
+      // SMS simulés : gardés en mémoire, jamais envoyés.
+      SMS_FOURNISSEUR: 'console',
     },
   },
 });

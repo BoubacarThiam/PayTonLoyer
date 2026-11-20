@@ -39,6 +39,17 @@ export const config = {
       autoriserLive: process.env.SASPAY_AUTORISER_LIVE === 'oui',
     },
   },
+  sms: {
+    // console : aucun envoi réel, le SMS s'affiche dans le terminal du serveur.
+    fournisseur: process.env.SMS_FOURNISSEUR || 'console',
+    orange: {
+      clientId: process.env.ORANGE_SMS_CLIENT_ID || '',
+      clientSecret: process.env.ORANGE_SMS_CLIENT_SECRET || '',
+      senderAddress: process.env.ORANGE_SMS_SENDER_ADDRESS || 'tel:+2210000',
+      // Nom d'expéditeur personnalisé (11 caractères max), à faire valider par Orange avant usage.
+      senderName: process.env.ORANGE_SMS_SENDER_NAME || '',
+    },
+  },
 };
 
 if (config.enProduction && config.jwtSecret.length < 32) {

@@ -36,6 +36,7 @@ function ilYaMois(n, jour) {
 }
 
 async function main() {
+  await prisma.notificationSms.deleteMany();
   await prisma.evenementWebhook.deleteMany();
   await prisma.quittance.deleteMany();
   await prisma.paiement.deleteMany();

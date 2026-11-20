@@ -14,6 +14,7 @@ import espaceLocataireRoutes from './routes/espaceLocataire.js';
 import paiementsRoutes from './routes/paiements.js';
 import quittancesRoutes from './routes/quittances.js';
 import simulateurRoutes from './routes/simulateur.js';
+import smsRoutes from './routes/sms.js';
 import { gestionErreurs, routeInconnue } from './middlewares/erreurs.js';
 import { DOSSIER_UPLOADS } from './services/images.js';
 import { tauxDeChange } from './services/devises.js';
@@ -49,6 +50,7 @@ export function creerApp() {
   if (!config.enProduction) app.use('/api/paiements/simulateur', simulateurRoutes);
   app.use('/api/paiements', paiementsRoutes);
   app.use('/api/quittances', quittancesRoutes);
+  app.use('/api/sms', smsRoutes);
   app.use('/api', routeInconnue);
 
   // En production, le serveur distribue aussi le client compilé.

@@ -19,6 +19,8 @@ model User {
   email                 String?   @unique
   motDePasseHash        String
   doitChangerMotDePasse Boolean   @default(false)
+  // Propriétaire : rappels de retard et confirmations de paiement envoyés par SMS (payants, donc à activer).
+  smsAutomatiques       Boolean   @default(false)
   tentativesEchouees    Int       @default(0)
   verrouilleJusqua      DateTime?
   // Pour un locataire : le propriétaire qui l'a créé
@@ -138,6 +140,26 @@ model Quittance {
   numero     String   @unique
   fichier    String
   createdAt  DateTime @default(now())
+}
+
+// Journal de chaque SMS : sert à facturer clairement le propriétaire et à ne jamais relancer trop souvent.
+model NotificationSms {
+  id             String   @id @default(cuid())
+  proprietaireId String
+  locataireId    String?
+  echeanceId     String?
+  type           String // RAPPEL_RETARD | RELANCE_MANUELLE | CODE_PROVISOIRE | CONFIRMATION_PAIEMENT
+  telephone      String
+  message        String
+  statut         String // ENVOYE | ECHEC
+  erreur         String?
+  idExterne      String?
+  fournisseur    String
+  createdAt      DateTime @default(now())
+
+  @@index([proprietaireId, createdAt])
+  @@index([locataireId, type, createdAt])
+  @@index([echeanceId])
 }
 
 model EvenementWebhook {

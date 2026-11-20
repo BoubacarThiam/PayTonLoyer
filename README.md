@@ -95,6 +95,20 @@ PayTonLoyer réunit tout au même endroit :
 - **Loyer en euros et en dollars** pour les locataires de la diaspora : euro au taux fixe officiel (1 € = 655,957 FCFA), dollar d’après le taux de la BCE via [Frankfurter](https://frankfurter.dev/). Montants indicatifs.
 - **QR code de vérification** sur chaque quittance : il ouvre la page publique `/verifier/<numéro>`, qui confirme l’authenticité de la quittance en n’affichant que les initiales des personnes. Le QR code est généré localement, sans service externe.
 
+### SMS (payants, à activer)
+Module interchangeable dans `server/sms/`, comme les paiements. Par défaut (`SMS_FOURNISSEUR=console`), **aucun SMS n’est envoyé** : ils s’affichent dans le terminal du serveur.
+- **Rappel de retard automatique** chaque matin à 9 h (heure de Dakar) : un seul SMS par locataire, qui regroupe ses retards, au plus une fois par semaine.
+- **Bouton « SMS »** sur chaque loyer en retard (au plus un rappel par locataire toutes les 24 h).
+- **Code provisoire par SMS** à la création d’un locataire : le serveur vérifie qu’il s’agit bien de son code avant d’envoyer.
+- **Confirmation de paiement** au locataire.
+
+Les envois automatiques ne partent que si le propriétaire active « SMS automatiques » dans **Compte**, où il voit aussi le nombre de SMS envoyés dans le mois. Chaque envoi est tracé (`NotificationSms`). Les textes sont rédigés dans l’alphabet SMS, pour tenir en un seul message de 160 caractères.
+
+**Envoi réel avec Orange (offre « SMS Senegal ») :**
+1. Créez une application sur [developer.orange.com](https://developer.orange.com/apis/sms-sn) et souscrivez à *SMS Senegal* : forfait de démarrage de 25 SMS à 25 FCFA, puis 100 SMS à 2 000 FCFA.
+2. Dans `server/.env` : `SMS_FOURNISSEUR=orange`, `ORANGE_SMS_CLIENT_ID`, `ORANGE_SMS_CLIENT_SECRET`.
+3. Facultatif : faites valider le nom d’expéditeur « PayTonLoyer » par Orange (gratuit), puis renseignez `ORANGE_SMS_SENDER_NAME`. Sans lui, l’expéditeur affiché est « SMS 123456 ».
+
 ### Côté technique
 - **Application web installable (PWA)**, pensée pour les petits écrans et les connexions lentes : écrans chargés à la demande, polices hébergées dans l’application, images compressées.
 - Interface entièrement en français, montants en FCFA (`150 000 FCFA`), dates au format français.

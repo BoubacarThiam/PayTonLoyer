@@ -8,6 +8,7 @@ import { exigerAuth, exigerRole } from '../middlewares/auth.js';
 import { valider } from '../middlewares/valider.js';
 import * as s from '../validators/schemas.js';
 import { avecStatutReel, genererEcheancesBail } from '../services/echeances.js';
+import { envoyerCodeParSms } from '../services/sms.js';
 import { dateEcheancePour, periodeDe } from '../utils/dates.js';
 import { paiementPublic } from '../utils/serialiser.js';
 
@@ -147,6 +148,11 @@ router.post('/:id/reinitialiser-code', valider({ params: s.paramsId }), async (r
     data: { motDePasseHash: await bcrypt.hash(code, 10), doitChangerMotDePasse: true, tentativesEchouees: 0, verrouilleJusqua: null },
   });
   res.json({ codeProvisoire: code });
+});
+
+router.post('/:id/envoyer-code', valider({ params: s.paramsId }), async (req, res) => {
+  await envoyerCodeParSms(req.valide.params.id, req.body?.code, req.user);
+  res.status(201).json({ ok: true, message: 'Code envoyé par SMS.' });
 });
 
 router.post('/:id/affecter', valider({ params: s.paramsId, body: s.affectation }), async (req, res) => {

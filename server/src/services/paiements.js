@@ -6,6 +6,7 @@ import { ErreurApi } from '../middlewares/erreurs.js';
 import { fournisseurActif, obtenirFournisseur } from '../../payments/index.js';
 import { ErreurFournisseur, RESULTATS } from '../../payments/erreurs.js';
 import { genererQuittanceSansEchec } from './quittances.js';
+import { notifierPaiementRecu } from './sms.js';
 import { libellePeriode } from '../utils/dates.js';
 
 export function nouvelleReference() {
@@ -42,6 +43,8 @@ export async function enregistrerPaiementManuel(echeance, { methode, date, note 
     });
   });
   await genererQuittanceSansEchec(echeance.id);
+  // Sans attendre : un SMS lent ou en échec ne doit pas retarder la réponse.
+  void notifierPaiementRecu(echeance.id);
   return paiement;
 }
 
@@ -95,6 +98,7 @@ export async function appliquerResultat(paiementId, resultat) {
   if (reussite) {
     const { echeanceId } = await prisma.paiement.findUnique({ where: { id: paiementId }, select: { echeanceId: true } });
     await genererQuittanceSansEchec(echeanceId);
+    void notifierPaiementRecu(echeanceId);
   }
   return reussite;
 }

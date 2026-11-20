@@ -3,6 +3,7 @@ import { ChevronRight, KeyRound, LogOut } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth.jsx';
 import { Avatar, Carte, EnTete } from '../components/ui.jsx';
 import { telephoneLisible } from '../utils/format.js';
+import ReglagesSms from '../components/ReglagesSms.jsx';
 
 export default function Compte() {
   const { utilisateur, deconnecter } = useAuth();
@@ -29,6 +30,8 @@ export default function Compte() {
             {estLocataire ? 'Locataire' : 'Propriétaire'}
           </span>
         </Carte>
+
+        {!estLocataire && <ReglagesSms />}
 
         <div className="divide-y divide-bordure overflow-hidden rounded-3xl bg-carte shadow-carte">
           <Link to="/changer-code" className={classesLigne}>

@@ -9,6 +9,7 @@ export const session = () => request.agent(app);
 export const anonyme = () => request(app);
 
 export async function viderBase() {
+  await prisma.notificationSms.deleteMany();
   await prisma.evenementWebhook.deleteMany();
   await prisma.quittance.deleteMany();
   await prisma.paiement.deleteMany();

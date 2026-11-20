@@ -7,6 +7,7 @@ import { valider } from '../middlewares/valider.js';
 import * as s from '../validators/schemas.js';
 import { avecStatutReel } from '../services/echeances.js';
 import { enregistrerPaiementManuel } from '../services/paiements.js';
+import { relancerParSms } from '../services/sms.js';
 import { debutJourUTC } from '../utils/dates.js';
 import { lienRappelWhatsapp } from '../utils/format.js';
 import { paiementPublic } from '../utils/serialiser.js';
@@ -79,6 +80,11 @@ router.post('/:id/paiement-manuel', valider({ params: s.paramsId, body: s.paieme
 
   const miseAJour = await prisma.echeance.findUnique({ where: { id: echeance.id }, include: inclusions });
   res.status(201).json({ echeance: serialiser(miseAJour, req.user) });
+});
+
+router.post('/:id/rappel-sms', valider({ params: s.paramsId }), async (req, res) => {
+  await relancerParSms(req.valide.params.id, req.user);
+  res.status(201).json({ ok: true, message: 'SMS de rappel envoyé.' });
 });
 
 export default router;
